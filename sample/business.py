@@ -1,38 +1,17 @@
-from .location import Location
-
-
 class Business:
     """ Representation of a business using this program.
 
     Attributes:
         name: name of the business
+        location: where the business is located
     """
 
-    def __init__(self, name: str, location: Location, ethics: float) -> None:
+    def __init__(self, name: str, location: str, ethics: float) -> None:
 
         self.name = name
         self.location = location
         self._ethics_score = ethics
-
-    @property
-    def location(self):
-        """
-        :return: where the business is located
-                 either 'domestic' or 'international'
-        """
-
-    @location.setter
-    def location(self, new_location: Location):
-
-        if not isinstance(new_location, Location):
-            raise TypeError('Invalid location!')
-
-        elif self.location == new_location:
-            raise ValueError('Location is already ! ' + new_location)
-
-        else:
-            self.location = new_location
-
+    
     @property
     def ethics_score(self):
         """
