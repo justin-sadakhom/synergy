@@ -11,7 +11,7 @@ class Business:
         self.name = name
         self.location = location
         self._ethics_score = ethics
-    
+
     @property
     def ethics_score(self):
         """
