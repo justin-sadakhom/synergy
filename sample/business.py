@@ -1,6 +1,3 @@
-from .location import Location
-
-
 class Business:
     """ Representation of a business using this program.
 
@@ -8,7 +5,7 @@ class Business:
         name: name of the business
     """
 
-    def __init__(self, name: str, location: Location, ethics: float) -> None:
+    def __init__(self, name: str, location: str, ethics: float):
 
         self.name = name
         self.location = location
@@ -20,12 +17,13 @@ class Business:
         :return: where the business is located
                  either 'domestic' or 'international'
         """
+        return self.location
 
     @location.setter
-    def location(self, new_location: Location):
+    def location(self, new_location: str):
 
-        if not isinstance(new_location, Location):
-            raise TypeError('Invalid location!')
+        if new_location != 'domestic' or new_location != 'international':
+            raise ValueError('Invalid location!')
 
         elif self.location == new_location:
             raise ValueError('Location is already ! ' + new_location)
