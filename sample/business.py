@@ -8,7 +8,7 @@ class Business:
     def __init__(self, name: str, location: str, ethics: float):
 
         self.name = name
-        self.location = location
+        self._location = location
         self._ethics_score = ethics
 
     @property
@@ -25,11 +25,11 @@ class Business:
         if new_location != 'domestic' or new_location != 'international':
             raise ValueError('Invalid location!')
 
-        elif self.location == new_location:
+        elif self._location == new_location:
             raise ValueError('Location is already ! ' + new_location)
 
         else:
-            self.location = new_location
+            self._location = new_location
 
     @property
     def ethics_score(self):

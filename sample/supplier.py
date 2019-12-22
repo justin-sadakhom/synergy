@@ -10,8 +10,10 @@ class Supplier(Business):
         delivery_time: how long it takes to transport material, in days
     """
 
-    def __init__(self, material: str, cost: int, delivery_time: int):
+    def __init__(self, name: str, location: str, ethics: float,
+                 material: str, cost: int, delivery_time: int):
 
+        super().__init__(name, location, ethics)
         self.cost = cost
         self.material = material
         self.delivery_time = delivery_time
