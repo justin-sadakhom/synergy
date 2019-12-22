@@ -3,7 +3,8 @@ from sample.business import Business
 
 
 class Client(Business):
-    """
+    """ Clients seek a partnership with a Supplier.
+
     Attributes:
         budget: how much the client is willing to spend, in dollars,
                 formatted as a Tuple expressing a range of (min, max)

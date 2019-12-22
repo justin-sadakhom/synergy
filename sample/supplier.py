@@ -2,7 +2,8 @@ from sample.business import Business
 
 
 class Supplier(Business):
-    """
+    """ Suppliers seek to supply their product to a Client.
+
     Attributes:
         material: the product the supplier is able to provide
         cost: cost of the materials
