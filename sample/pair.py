@@ -21,7 +21,7 @@ class Pair:
     def synergy_score(self) -> float:
 
         # Will have more than delivery_score() as we add more functions
-        return self.delivery_score() * 0.15 + budget_score() * 0.30
+        return self.delivery_score() * 0.15 + budget_score() * 0.30 + location_score()*0.1
 
     def delivery_score(self) -> float:
 
@@ -36,6 +36,25 @@ class Pair:
         # Results in score of 0 if order is late by max_late_days days
         else:
             return perfect_score - (actual_time - expected_time) / max_late_days
+
+    def location_score(self) -> float:
+        #gets client and supplier location and compares them
+        client_location = self.client.location(self.client)
+        supplier_location = self.supplier.location(self.supplier)
+        perfect_score = self.PERFECT_SCORE
+
+        if client_location == supplier_location:
+            return perfect_score
+
+        else:
+            # 0.75 is penalty
+            return perfect_score * 0.75
+
+    def ethics_score(self) -> float:
+
+        # need to discuss weight for ethics
+        supplier_ethic_score = self.supplier.ethics_score(self.supplier)
+        return supplier_ethic_score
 
     def budget_score(self) -> float:
         # a = lowest budget
