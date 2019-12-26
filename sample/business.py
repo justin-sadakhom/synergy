@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Business:
     """ Representation of a business using this program.
 
@@ -5,11 +8,12 @@ class Business:
         name: name of the business
     """
 
-    def __init__(self, name: str, location: str, ethics: float):
+    def __init__(self, name: str, location: str, ethics: float, quantity: List[int]):
 
         self.name = name
         self._location = location
         self._ethics_score = ethics
+        self.quantity = quantity
 
     @property
     def location(self):
@@ -51,3 +55,11 @@ class Business:
 
         else:
             self._ethics_score = float(score)
+
+    @property
+    def qunaitty(self):
+        """
+
+        :return: how much of the product they have
+        """
+        return self.quantity

@@ -12,10 +12,10 @@ class Client(Business):
         delivery_time: estimated time client wants their order fulfilled by
     """
 
-    def __init__(self, name: str, location: str, ethics: float,
+    def __init__(self, name: str, location: str, ethics: float, quantity: List[int],
                  budget: Tuple[int], materials: List[str], delivery_time: int):
 
-        super().__init__(name, location, ethics)
+        super().__init__(name, location, ethics, quantity)
         self.budget = budget
         self.materials = materials
         self.delivery_time = delivery_time
