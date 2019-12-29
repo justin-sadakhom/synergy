@@ -8,7 +8,8 @@ class Business:
         name: name of the business
     """
 
-    def __init__(self, name: str, location: str, ethics: float, quantity: List[int]):
+    def __init__(self, name: str, location: str, ethics: float,
+                 quantity: List[int]):
 
         self.name = name
         self._location = location
@@ -18,14 +19,17 @@ class Business:
     @property
     def location(self):
         """
-        :return: where the business is located
-                 either 'domestic' or 'international'
+        :return: Where the business is located
+                 either 'domestic' or 'international'.
         """
         return self.location
 
     @location.setter
     def location(self, new_location: str):
-
+        """
+        :param new_location: The location to update to.
+        :return: The updated location, if successful.
+        """
         if new_location != 'domestic' or new_location != 'international':
             raise ValueError('Invalid location!')
 
@@ -38,14 +42,17 @@ class Business:
     @property
     def ethics_score(self):
         """
-        :return: how ethical the business is on a scale of 0.0 - 1.0,
-                 with 1.0 being most ethical
+        :return: How ethical the business is on a scale of 0.0 - 1.0,
+                 with 1.0 being most ethical.
         """
         return self._ethics_score
 
     @ethics_score.setter
     def ethics_score(self, score):
-
+        """
+        :param score: The score to update to.
+        :return: The updated ethics score, if successful.
+        """
         if not isinstance(score, float):
             raise TypeError('Ethics score must be a float!')
 
@@ -59,6 +66,6 @@ class Business:
     @property
     def quantity(self):
         """
-        :return: how much of the product they have
+        :return: How much of the product the business has.
         """
         return self.quantity
