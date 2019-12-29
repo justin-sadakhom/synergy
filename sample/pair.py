@@ -5,12 +5,14 @@ from sample.supplier import Supplier
 class Pair:
     """ Represents a potential pairing between Client and Supplier.
     """
-    #need to add quality weight
+    
     PERFECT_SCORE = 1.0
     DELIVERY_WEIGHT = 0.15
-    BUDGET_WEIGHT = 0.30
+    BUDGET_WEIGHT = 0.25
+    QUANTITY_WEIGHT = 0.25
+    QUALITY_WEIGHT = 0.2
     LOCATION_WEIGHT = 0.1
-    ETHICS_WEIGHT = 1.0
+    ETHICS_WEIGHT = 0.05
     BAD_LOCATION_PENALTY = 0.75
     PERFECT_QUALITY_RATING= 5.0
 
@@ -35,11 +37,14 @@ class Pair:
         delivery_weight = self.DELIVERY_WEIGHT
         budget_weight = self.BUDGET_WEIGHT
         location_weight = self.LOCATION_WEIGHT
+        ethics_weight = self.ETHICS_WEIGHT
+        quality_weight = self.QUALITY_WEIGHT
 
-        # Will have more than delivery_score() as we add more functions
         return (self.delivery_score() * delivery_weight +
                 self.budget_score() * budget_weight +
-                self.location_score() * location_weight)
+                self.location_score() * location_weight +
+                self.ethics_score() *ethics_weight +
+                self.quality_score()*quality_weight)
 
     def delivery_score(self) -> float:
         """ Calculate a score based on punctuality of Supplier's delivery.
@@ -81,7 +86,7 @@ class Pair:
         """
 
         material_quality_rating = self.supplier.quality
-        perfect_quality_rating =self.PERFECT_QUALITY_RATING
+        perfect_quality_rating = self.PERFECT_QUALITY_RATING
         quality_score = material_quality_rating/perfect_quality_rating
 
         return quality_score
@@ -94,9 +99,8 @@ class Pair:
 
         # Need to discuss weight for ethics
         supplier_ethic_score = self.supplier.ethics_score(self.supplier)
-        ethics_weight = self.ETHICS_WEIGHT
 
-        return supplier_ethic_score * ethics_weight
+        return supplier_ethic_score
 
     def budget_score(self) -> float:
         """ Calculate a score based on the budget of the Client and the cost of
