@@ -5,13 +5,14 @@ from sample.supplier import Supplier
 class Pair:
     """ Represents a potential pairing between Client and Supplier.
     """
-
+    #need to add quality weight
     PERFECT_SCORE = 1.0
     DELIVERY_WEIGHT = 0.15
     BUDGET_WEIGHT = 0.30
     LOCATION_WEIGHT = 0.1
     ETHICS_WEIGHT = 1.0
     BAD_LOCATION_PENALTY = 0.75
+    PERFECT_QUALITY_RATING= 5.0
 
     def __init__(self, client: Client, supplier: Supplier):
         """ Default constructor.
@@ -73,6 +74,17 @@ class Pair:
             return perfect_score
 
         return perfect_score * bad_location_penalty
+    def quality_score(self) -> float:
+        """Calculate a score based on quality of material
+
+        :return: A quality score
+        """
+
+        material_quality_rating = self.supplier.quality
+        perfect_quality_rating =self.PERFECT_QUALITY_RATING
+        quality_score = material_quality_rating/perfect_quality_rating
+
+        return quality_score
 
     def ethics_score(self) -> float:
         """ Calculate a score based on the reputation of Supplier's ethics.

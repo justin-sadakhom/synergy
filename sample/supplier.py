@@ -11,9 +11,11 @@ class Supplier(Business):
     """
 
     def __init__(self, name: str, location: str, ethics: float, quantity: int,
-                 material: str, cost: int, delivery_time: int):
+                 material: str, cost: int, delivery_time: int, quality: float):
 
         super().__init__(name, location, ethics, [quantity])
         self.cost = cost
         self.material = material
         self.delivery_time = delivery_time
+        #quality will have a float value of 0.0 to 5.0
+        self.quality = quality
