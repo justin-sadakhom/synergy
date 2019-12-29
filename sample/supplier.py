@@ -5,9 +5,9 @@ class Supplier(Business):
     """ Suppliers seek to supply their product to a Client.
 
     Attributes:
-        material: the product the supplier is able to provide
-        cost: cost of the materials
-        delivery_time: how long it takes to transport material, in days
+        material: The product the supplier is able to provide.
+        cost: Cost of the materials.
+        delivery_time: How long it takes to transport material, in days.
     """
 
     def __init__(self, name: str, location: str, ethics: float, quantity: int,
