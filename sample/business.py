@@ -57,9 +57,8 @@ class Business:
             self._ethics_score = float(score)
 
     @property
-    def qunaitty(self):
+    def quantity(self):
         """
-
         :return: how much of the product they have
         """
         return self.quantity
