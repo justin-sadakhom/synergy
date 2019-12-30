@@ -1,3 +1,4 @@
+from typing import List
 from sample.business import Business
 
 
@@ -10,10 +11,11 @@ class Supplier(Business):
         delivery_time: How long it takes to transport material, in days.
     """
 
-    def __init__(self, name: str, location: str, ethics: float, quantity: int,
-                 material: str, cost: int, delivery_time: int):
+    def __init__(self, name: str, location: str, ethics: float,
+                 quantity: List[int], material: str, cost: int,
+                 delivery_time: int):
 
-        super().__init__(name, location, ethics, [quantity])
+        super().__init__(name, location, ethics, quantity)
         self.cost = cost
         self.material = material
         self.delivery_time = delivery_time

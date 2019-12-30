@@ -5,7 +5,8 @@ class Business:
     """ Representation of a business using this program.
 
     Attributes:
-        name: name of the business
+        name: Name of the business.
+        quantity: How much of the product the business has.
     """
 
     def __init__(self, name: str, location: str, ethics: float,
@@ -62,10 +63,3 @@ class Business:
 
         else:
             self._ethics_score = float(score)
-
-    @property
-    def quantity(self):
-        """
-        :return: How much of the product the business has.
-        """
-        return self.quantity
