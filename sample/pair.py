@@ -1,6 +1,7 @@
 from sample.client import Client
 from sample.supplier import Supplier
-
+from sample.request import Request
+from sample.product import Product
 
 class Pair:
     """ Represents a potential pairing between Client and Supplier.
@@ -16,16 +17,21 @@ class Pair:
     BAD_LOCATION_PENALTY = 0.75
     PERFECT_QUALITY_RATING= 5.0
 
-    def __init__(self, client: Client, supplier: Supplier):
+    def __init__(self, client: Client, supplier: Supplier, request, Request):
         """ Default constructor.
 
         :Args:
             :param client: The Client object.
             :param supplier: The Supplier object.
+            :param request: The Client's request object
+            :param product: The supplier's list of products
         """
 
         self.client = client
         self.supplier = supplier
+        self.request = request
+        self.product = supplier.products
+
 
     def synergy_score(self) -> float:
         """ Calculate how compatible the Client and Supplier are,
@@ -63,6 +69,7 @@ class Pair:
         # Results in score of 0 if order is late by max_late_days days
         return perfect_score - (actual_time - expected_time) / max_late_days
 
+    #no need to change location algorithm
     def location_score(self) -> float:
         """ Calculate a score based on the Client's preferred location and the
             location of the Supplier.
@@ -79,6 +86,7 @@ class Pair:
             return perfect_score
 
         return perfect_score * bad_location_penalty
+
     def quality_score(self) -> float:
         """Calculate a score based on quality of material
 
@@ -91,13 +99,13 @@ class Pair:
 
         return quality_score
 
+    #no need to change ethics score
     def ethics_score(self) -> float:
         """ Calculate a score based on the reputation of Supplier's ethics.
 
         :return: An ethics score.
         """
 
-        # Need to discuss weight for ethics
         supplier_ethic_score = self.supplier.ethics_score(self.supplier)
 
         return supplier_ethic_score
