@@ -12,3 +12,8 @@ def test_search_by_name() -> None:
     expected_result = [s2]
 
     assert actual_result == expected_result
+
+
+if __name__ == 'main':
+
+    test_search_by_name()
