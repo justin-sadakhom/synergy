@@ -8,14 +8,13 @@ class Client(Business):
     Attributes:
         budget: How much the client is willing to spend, in dollars,
                 formatted as a Tuple expressing a range of (min, max).
-        materials: What materials the client is seeking.
         delivery_time: Estimated time client wants their order fulfilled by.
     """
 
-    def __init__(self, name: str, location: str, ethics: float, quantity: List[int],
-                 budget: Tuple[int], materials: List[str], delivery_time: int):
+    def __init__(self, name: str, location: str, ethics: float,
+                 materials: List[str], quantity: List[int],
+                 budget: Tuple[int], delivery_time: int):
 
-        super().__init__(name, location, ethics, quantity)
+        super().__init__(name, location, ethics, materials, quantity)
         self.budget = budget
-        self.materials = materials
         self.delivery_time = delivery_time
