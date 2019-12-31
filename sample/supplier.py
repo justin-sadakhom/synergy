@@ -13,7 +13,7 @@ class Supplier(Business):
 
     def __init__(self, name: str, location: str, ethics: float,
                  materials: List[str], quantity: List[int],
-                 cost: int, delivery_time: int, quality: List[float]):
+                 cost: List[int], delivery_time: int, quality: List[float]):
 
         super().__init__(name, location, ethics, materials, quantity)
         self.cost = cost
