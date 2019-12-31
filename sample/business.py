@@ -5,21 +5,19 @@ class Business:
     """ Representation of a business using this program.
 
     Attributes:
-        name: name of the business
+        name: Name of the business.
     """
 
-    def __init__(self, name: str, location: str, ethics: float,
-                 quantity: List[int]):
+    def __init__(self, name: str, location: str, ethics: float):
 
         self.name = name
         self._location = location
         self._ethics_score = ethics
-        self.quantity = quantity
 
     @property
     def location(self):
         """
-        :return: Where the business is located
+        :return: Where the business is located,
                  either 'domestic' or 'international'.
         """
         return self.location
@@ -62,10 +60,3 @@ class Business:
 
         else:
             self._ethics_score = float(score)
-
-    @property
-    def quantity(self):
-        """
-        :return: How much of the product the business has.
-        """
-        return self.quantity

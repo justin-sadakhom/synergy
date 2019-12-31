@@ -1,21 +1,21 @@
+from typing import List
 from sample.business import Business
+from sample.product import Product
 
 
 class Supplier(Business):
-    """ Suppliers seek to supply their product to a Client.
+    """ Suppliers seek to supply their products to a Client.
 
     Attributes:
-        material: The product the supplier is able to provide.
-        cost: Cost of the materials.
-        delivery_time: How long it takes to transport material, in days.
+        products: The goods the Supplier has to offer.
     """
 
-    def __init__(self, name: str, location: str, ethics: float, quantity: int,
-                 material: str, cost: int, delivery_time: int, quality: float):
+    def __init__(self, name: str, location: str, ethics: float):
 
-        super().__init__(name, location, ethics, [quantity])
-        self.cost = cost
-        self.material = material
-        self.delivery_time = delivery_time
-        #quality will have a float value of 0.0 to 5.0
-        self.quality = quality
+        super().__init__(name, location, ethics)
+        self.products = []
+
+    def add_product(self, product: Product):
+
+        if product not in self.products:
+            self.products.append(product)
