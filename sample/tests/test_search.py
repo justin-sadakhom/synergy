@@ -1,19 +1,21 @@
 from sample.search import *
+import unittest
 
 
-def test_search_by_name() -> None:
+class TestSearchMethods(unittest.TestCase):
 
-    s1 = Supplier("Yug's Bugs", "Domestic", 1.0, [10], "pesticide", 1, 3)
-    s2 = Supplier("Power Pest", "Domestic", 0.5, [12], "pesticide", 2, 6)
+    def test_search_by_name(self):
 
-    database = [s1, s2]
+        s1 = Supplier("Yug's Bugs", 'domestic', None)
+        s2 = Supplier('Power Pest', 'domestic', None)
 
-    actual_result = search_by_name("pest", database)
-    expected_result = [s2]
+        database = [s1, s2]
 
-    assert actual_result == expected_result
+        actual = search_by_name("pest", database)
+        expected = [s2]
+
+        self.assertEquals(actual, expected)
 
 
-if __name__ == 'main':
-
-    test_search_by_name()
+if __name__ == '__main__':
+    unittest.main()

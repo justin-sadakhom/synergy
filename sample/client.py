@@ -1,20 +1,23 @@
-from typing import List, Tuple
+from typing import Tuple
 from sample.business import Business
+from sample.request import Request
 
 
 class Client(Business):
     """ Clients seek a partnership with a Supplier.
 
     Attributes:
-        budget: How much the client is willing to spend, in dollars,
-                formatted as a Tuple expressing a range of (min, max).
-        delivery_time: Estimated time client wants their order fulfilled by.
+        requests: The type of products the Client is seeking.
     """
 
     def __init__(self, name: str, location: str, ethics: float,
-                 materials: List[str], quantity: List[int],
-                 budget: Tuple[int], delivery_time: int):
+                 budget: Tuple[int, int]):
 
-        super().__init__(name, location, ethics, materials, quantity)
+        super().__init__(name, location, ethics,)
         self.budget = budget
-        self.delivery_time = delivery_time
+        self.requests = []
+
+    def add_request(self, request: Request):
+
+        if request not in self.requests:
+            self.requests.append(request)

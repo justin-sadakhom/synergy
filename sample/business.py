@@ -6,18 +6,13 @@ class Business:
 
     Attributes:
         name: Name of the business.
-        materials: The product the business wants or offers.
-        quantity: How much of each product.
     """
 
-    def __init__(self, name: str, location: str, ethics: float,
-                 materials: List[str], quantity: List[int]):
+    def __init__(self, name: str, location: str, ethics: float):
 
         self.name = name
         self._location = location
         self._ethics_score = ethics
-        self.materials = materials
-        self.quantity = quantity
 
     @property
     def location(self):
