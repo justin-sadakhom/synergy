@@ -4,12 +4,23 @@ from sample.product import Product
 
 
 def search_by_name(text: str, database: List[Supplier]) -> List[Supplier]:
+    """ Get a list of Suppliers in database that have text at the beginning of
+        any word in their name. NOT case-sensitive.
+
+    :param text: The search term.
+    :param database: All the Supplier info available.
+    :return: Suppliers with names matching the search term.
+    """
 
     result = []
 
     for supplier in database:
-        for word in supplier.name.lower().split():
-            if word.startswith(text):
+
+        # Supplier may have more than one word in name
+        supplier_name = supplier.name.lower().split()
+
+        for word in supplier_name:
+            if word.startswith(text.lower()):
                 result.append(supplier)
                 break
 
@@ -17,16 +28,24 @@ def search_by_name(text: str, database: List[Supplier]) -> List[Supplier]:
 
 
 def search_by_product(text: str, database: List[Supplier]) -> List[Supplier]:
+    """ Get a list of Suppliers in database that have text at the beginning of
+        any word in any of their products. NOT case-sensitive.
+
+    :param text: The search term.
+    :param database: All the Supplier info available.
+    :return: Suppliers with at least one product matching the search term.
+    """
 
     result = []
     product_to_supplier = build_p_to_s(database)
 
     for product in product_to_supplier:
 
+        # Product may have more than one word in name.
         product_name = str(product.name).lower().split()
 
         for word in product_name:
-            if word.startswith(text):
+            if word.startswith(text.lower()):
 
                 for supplier in product_to_supplier[product]:
                     if supplier not in result:
@@ -36,12 +55,16 @@ def search_by_product(text: str, database: List[Supplier]) -> List[Supplier]:
     return result
 
 
-def build_p_to_s(suppliers: List[Supplier]) \
-        -> Dict[Product, List[Supplier]]:
+def build_p_to_s(database: List[Supplier]) -> Dict[Product, List[Supplier]]:
+    """ Get a Dictionary of Products corresponding to their Suppliers.
+
+    :param database: All the Supplier info available.
+    :return: A product-to-supplier dictionary.
+    """
 
     result = {}
 
-    for supplier in suppliers:
+    for supplier in database:
         for product in supplier.products:
 
             product_name = product.name
