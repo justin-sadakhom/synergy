@@ -3,6 +3,7 @@ from sample.supplier import Supplier
 from sample.request import Request
 from sample.product import Product
 
+
 class Pair:
     """ Represents a potential pairing between Client and Supplier.
     """
@@ -15,16 +16,15 @@ class Pair:
     LOCATION_WEIGHT = 0.1
     ETHICS_WEIGHT = 0.05
     BAD_LOCATION_PENALTY = 0.75
-    PERFECT_QUALITY_RATING= 5.0
+    PERFECT_QUALITY_RATING = 5.0
 
-    def __init__(self, client: Client, supplier: Supplier, request, Request, product, Product):
+    def __init__(self, client: Client, supplier: Supplier, request: Request):
         """ Default constructor.
 
         :Args:
             :param client: The Client object.
             :param supplier: The Supplier object.
-            :param request: The Client's request
-            :param product: The supplier product
+            :param request: The Client's request.
         """
 
         self.client = client
@@ -32,17 +32,18 @@ class Pair:
         self.request = request
         self.product = self.find_product(supplier, request.name)
 
+    @staticmethod
     def find_product(self, supplier: Supplier, request_name: str) -> Product:
-        """ takes the name of the requested item from client and finds
-            approriate product object from Supplier
+        """ Take request_name and find a matching product from supplier.
 
-        :return: a Product object
+        :return: A Product object.
         """
+
         for product in supplier.products:
             if product.name == request_name:
                 return product
-        return product
 
+        return product
 
     def synergy_score(self) -> float:
         """ Calculate how compatible the Client and Supplier are,
@@ -80,7 +81,6 @@ class Pair:
         # Results in score of 0 if order is late by max_late_days days
         return perfect_score - (actual_time - expected_time) / max_late_days
 
-    #no need to change location algorithm
     def location_score(self) -> float:
         """ Calculate a score based on the Client's preferred location and the
             location of the Supplier.
@@ -99,9 +99,9 @@ class Pair:
         return perfect_score * bad_location_penalty
 
     def quality_score(self) -> float:
-        """Calculate a score based on quality of material
+        """ Calculate a score based on quality of material.
 
-        :return: A quality score
+        :return: A quality score.
         """
 
         material_quality_rating = self.request.quality
@@ -110,7 +110,6 @@ class Pair:
 
         return quality_score
 
-    #no need to change ethics score
     def ethics_score(self) -> float:
         """ Calculate a score based on the reputation of Supplier's ethics.
 
