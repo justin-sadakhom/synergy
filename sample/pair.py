@@ -61,8 +61,8 @@ class Pair:
         return (self.delivery_score() * delivery_weight +
                 self.budget_score() * budget_weight +
                 self.location_score() * location_weight +
-                self.ethics_score() *ethics_weight +
-                self.quality_score()*quality_weight)
+                self.ethics_score() * ethics_weight +
+                self.quality_score() * quality_weight)
 
     def delivery_score(self) -> float:
         """ Calculate a score based on punctuality of Supplier's delivery.
