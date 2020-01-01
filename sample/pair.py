@@ -17,20 +17,31 @@ class Pair:
     BAD_LOCATION_PENALTY = 0.75
     PERFECT_QUALITY_RATING= 5.0
 
-    def __init__(self, client: Client, supplier: Supplier, request, Request):
+    def __init__(self, client: Client, supplier: Supplier, request, Request, product, Product):
         """ Default constructor.
 
         :Args:
             :param client: The Client object.
             :param supplier: The Supplier object.
-            :param request: The Client's request object
-            :param product: The supplier's list of products
+            :param request: The Client's request
+            :param product: The supplier product
         """
 
         self.client = client
         self.supplier = supplier
         self.request = request
-        self.product = supplier.products
+        self.product = self.find_product(supplier, request.name)
+
+    def find_product(self, supplier: Supplier, request_name: str) -> Product:
+        """ takes the name of the requested item from client and finds
+            approriate product object from Supplier
+
+        :return: a Product object
+        """
+        for product in supplier.products:
+            if product.name == request_name:
+                return product
+        return product
 
 
     def synergy_score(self) -> float:
@@ -60,8 +71,8 @@ class Pair:
 
         max_late_days = 5
         perfect_score = self.PERFECT_SCORE
-        expected_time = self.client.delivery_time
-        actual_time = self.supplier.delivery_time
+        expected_time = self.request.delivery_time
+        actual_time = self.product.delivery_time
 
         if actual_time <= expected_time:
             return perfect_score
@@ -93,7 +104,7 @@ class Pair:
         :return: A quality score
         """
 
-        material_quality_rating = self.supplier.quality
+        material_quality_rating = self.request.quality
         perfect_quality_rating = self.PERFECT_QUALITY_RATING
         quality_score = material_quality_rating/perfect_quality_rating
 
