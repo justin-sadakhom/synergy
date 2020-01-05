@@ -1,5 +1,5 @@
 class Request:
-    """ Parameters for a product that a Supplier is seeking.
+    """ Parameters for a product that a Client is seeking.
 
     Attributes:
         name: What the product is called.

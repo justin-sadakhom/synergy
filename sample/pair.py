@@ -43,7 +43,7 @@ class Pair:
             if product.name == request_name:
                 return product
 
-        return product
+        return None
 
     def synergy_score(self) -> float:
         """ Calculate how compatible the Client and Supplier are,
@@ -51,6 +51,10 @@ class Pair:
 
         :return: Sum of all the weighted scores.
         """
+
+        # If supplier doesn't have the product for the client, there score is 0
+        if self.product is None:
+            return 0.0
 
         delivery_weight = self.DELIVERY_WEIGHT
         budget_weight = self.BUDGET_WEIGHT
@@ -61,8 +65,8 @@ class Pair:
         return (self.delivery_score() * delivery_weight +
                 self.budget_score() * budget_weight +
                 self.location_score() * location_weight +
-                self.ethics_score() *ethics_weight +
-                self.quality_score()*quality_weight)
+                self.ethics_score() * ethics_weight +
+                self.quality_score() * quality_weight)
 
     def delivery_score(self) -> float:
         """ Calculate a score based on punctuality of Supplier's delivery.
@@ -133,7 +137,7 @@ class Pair:
         """
 
         min_budget = self.client.budget[0]
-        supplier_cost = self.supplier.cost
+        supplier_cost = self.request.cost
         max_budget = self.client.budget[1]
 
         # Cost is within budget, use the function a / x
