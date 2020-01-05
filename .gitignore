@@ -130,3 +130,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# project settings
+/backend/backend/settings.py
