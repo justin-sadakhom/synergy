@@ -1,2 +1,2 @@
 # Synergy
-Python version: 3.8.0
+Python version: 3.7.5
