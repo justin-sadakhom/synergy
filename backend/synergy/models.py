@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.forms import ModelForm
 
 
 # Create your models here.
@@ -31,3 +32,9 @@ class Product(models.Model):
 
         return "{0} – Price: ${1}, In Stock: {2}, {3}-day delivery" \
             .format(name, self.cost, self.quantity, self.delivery_time)
+
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'quality', 'quantity', 'delivery_time', 'cost']
