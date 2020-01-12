@@ -14,7 +14,7 @@ class Product(models.Model):
             :cost: Cost per unit, in dollars.
     """
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=30)
     quantity = models.IntegerField(validators=[MinValueValidator(0)])
     quality = models.DecimalField(
         default=0,
@@ -23,4 +23,11 @@ class Product(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(5)]
     )
     delivery_time = models.IntegerField()
-    cost = models.DecimalField(max_digits=None, decimal_places=2)
+    cost = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+
+        name = self.name.capitalize()
+
+        return "{0} – Price: ${1}, In Stock: {2}, {3}-day delivery" \
+            .format(name, self.cost, self.quantity, self.delivery_time)
