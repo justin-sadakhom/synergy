@@ -38,3 +38,23 @@ class ProductForm(ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'quality', 'quantity', 'delivery_time', 'cost']
+
+
+class ClientLogin(models.Model):
+    """Information required for a client/supplier to login to the site
+    Attributes:
+            :username: username to login
+            :password: password to login
+
+    """
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=40)
+    def __str__(self):
+        username = self.username.capitalize()
+        return "Username - {0], Password - {1}"\
+        .format(username, self.password)
+
+class LoginForm(ModelForm):
+    class Meta:
+        model = ClientLogin
+        fields =['username','password']
