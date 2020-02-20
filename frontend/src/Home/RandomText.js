@@ -1,0 +1,18 @@
+import React from 'react'
+
+function RandomText(){
+    return(
+        <p id = 'rando' style={{fontSize: 100}}>
+
+        This example demonstrates how to slide down a navbar when the user starts to scroll the page.
+        
+        Scroll down this frame to see the effect!
+        
+        Scroll to the top to hide the navbar.
+        
+        Lorem ipsum dolor dummy text sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    )
+}
+
+export default RandomText

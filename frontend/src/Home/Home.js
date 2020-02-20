@@ -1,9 +1,12 @@
 import React from 'react';
+import RandomText from './RandomText'
+import Navbar from './Navbar/Navbar'
 
 function Home(){
     return(
         <div>
-            <p>Home Page HOW ABOUT THAT ANDREW</p>
+            <Navbar />
+            <RandomText />
         </div>
     )
 }
