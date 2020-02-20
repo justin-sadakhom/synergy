@@ -24,10 +24,10 @@ function Navbar() {
 
     return (
         <div>
-            <div id = 'navbar' style={navbar}>
-                <p style={navbarA}>Home</p>
-                <p style={navbarA}>About</p>
-                <p style={navbarA}>Contact</p>
+            <div id = 'navbar' style = {navbar}>
+                <p style ={navbarA}>Home</p>
+                <p style ={navbarA}>About</p>
+                <p style ={navbarA}>Contact</p>
             </div>
         </div>
     )
