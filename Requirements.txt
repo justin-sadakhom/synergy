@@ -1,2 +1,4 @@
+pytest
 django
 mysqlclient
+pytest_django

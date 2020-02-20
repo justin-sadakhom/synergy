@@ -2,6 +2,7 @@
   <dictionary name="justin">
     <words>
       <w>mysqlclient</w>
+      <w>pytest</w>
     </words>
   </dictionary>
 </component>
