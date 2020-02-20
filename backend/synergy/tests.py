@@ -1,22 +1,19 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
-from . models import Product
+from . models import Item
 
 
 # Create your tests here.
-class ProductModelTests(TestCase):
 
-    def setUp(self) -> None:
+class ItemModelTest(TestCase):
 
-        Product.objects.create(
-            name='pesticide',
-            quantity=12,
-            quality=5.0,
-            delivery_time=1,
-            cost=0.99
-        )
+    def setUp(self):
+        Item.objects.create(name='item', quantity=1)
 
-    def test_product_string(self):
+    def test_negative_quantity(self):
 
-        product = Product.objects.get(name="pesticide")
-        expected = "Pesticide – Price: $0.99, In Stock: 12, 1-day delivery"
-        self.assertEqual(str(product), expected)
+        item = Item.objects.get(id=1)
+        item.quantity = -1
+
+        with self.assertRaises(ValidationError):
+            item.full_clean()
