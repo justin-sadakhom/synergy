@@ -5,6 +5,15 @@ import pytest
 
 # Create your tests here.
 
+def test_item_short_name() -> None:
+
+    item = Item(name='item', quantity=1)
+    item.name = 'i'
+
+    with pytest.raises(ValidationError):
+        item.full_clean()
+
+
 def test_item_negative_quantity() -> None:
 
     item = Item(name='item', quantity=1)
