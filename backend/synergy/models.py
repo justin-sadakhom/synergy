@@ -12,13 +12,9 @@ def validate_name(name: str):
     if len(name) < 2:
         raise ValidationError('Name must have at least 2 characters')
 
-    elif '  ' in name:
-        raise ValidationError('Name cannot have more than 2 spaces in a row')
-
-    else:
-        for char in name:
-            if not (char.isalpha() or char.isnumeric() or char == ' '):
-                raise ValidationError('Name cannot have special characters')
+    for char in name:
+        if not (char.isalpha() or char.isnumeric() or char == ' '):
+            raise ValidationError('Name cannot have special characters')
 
 
 # Custom fields
@@ -54,7 +50,7 @@ class Item(models.Model):
         quantity (int): How much of the item there is.
     """
 
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, validators=[validate_name])
     quantity = models.IntegerField(validators=[MinValueValidator(0)])
 
     class Meta:
@@ -92,7 +88,7 @@ class Product(Item):
 
     def __str__(self):
         return '{0} – Price: ${1}, In Stock: {2}' \
-            .format(name, self.cost, self.quantity)
+            .format(self.name, self.cost, self.quantity)
 
 
 class ProductForm(forms.ModelForm):
