@@ -27,3 +27,9 @@ def test_product_str() -> None:
 
     product = Product(name='Pesticide', quantity=12, cost=0.99)
     assert str(product) == 'Pesticide – Price: $0.99, In Stock: 12'
+
+
+def test_product_str_lowercase() -> None:
+
+    product = Product(name='pesticide', quantity=12, cost=0.99)
+    assert str(product) == 'Pesticide – Price: $0.99, In Stock: 12'
