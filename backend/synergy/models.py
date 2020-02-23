@@ -69,11 +69,10 @@ class Product(Item):
 
     cost = models.DecimalField(
         decimal_places=2,
-        max_digits=5,
+        max_digits=6,
         validators=[MinValueValidator(0.0)]
     )
     _quality = models.DecimalField(
-        blank=True,
         default=0.0,
         max_digits=2,
         decimal_places=1,

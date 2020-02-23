@@ -1,35 +1,76 @@
 from django.core.exceptions import ValidationError
-from .models import Item, Product
+from .models import Item, Product, ProductForm
 import pytest
+
+"""
+Run these tests using 'pytest' in Terminal.
+By default, every test will be run.
+Skip all tests marked with 'slow' using 'pytest -m "not slow"'.
+"""
 
 
 # Create your tests here.
 
-def test_item_short_name() -> None:
+class TestItem:
 
-    item = Item(name='item', quantity=1)
-    item.name = 'i'
+    def test_item_short_name(self):
 
-    with pytest.raises(ValidationError):
-        item.full_clean()
+        item = Item(name='i', quantity=1)
+
+        with pytest.raises(ValidationError):
+            item.full_clean()
+
+    def test_item_long_name(self):
+
+        item = Item(name='dichlorodiphenyltrichloroethane', quantity=1)
+
+        with pytest.raises(ValidationError):
+            item.full_clean()
+
+    def test_item_special_char_name(self):
+
+        item = Item(name='???', quantity=1)
+
+        with pytest.raises(ValidationError):
+            item.full_clean()
+
+    def test_item_negative_quantity(self):
+
+        item = Item(name='item', quantity=-1)
+
+        with pytest.raises(ValidationError):
+            item.full_clean()
 
 
-def test_item_negative_quantity() -> None:
+class TestProduct:
 
-    item = Item(name='item', quantity=1)
-    item.quantity = -1
+    def test_product_str(self):
 
-    with pytest.raises(ValidationError):
-        item.full_clean()
+        product = Product(name='Pesticide', quantity=12, cost=0.99)
+        assert str(product) == 'Pesticide – Price: $0.99, In Stock: 12'
 
+    def test_product_str_lowercase(self):
 
-def test_product_str() -> None:
-
-    product = Product(name='Pesticide', quantity=12, cost=0.99)
-    assert str(product) == 'Pesticide – Price: $0.99, In Stock: 12'
+        product = Product(name='pesticide', quantity=12, cost=0.99)
+        assert str(product) == 'Pesticide – Price: $0.99, In Stock: 12'
 
 
-def test_product_str_lowercase() -> None:
+@pytest.mark.django_db
+@pytest.mark.slow
+class TestProductForm:
 
-    product = Product(name='pesticide', quantity=12, cost=0.99)
-    assert str(product) == 'Pesticide – Price: $0.99, In Stock: 12'
+    def test_product_form_basic(self):
+
+        form = ProductForm({
+            'name': 'Portal Gun',
+            'quantity': 1,
+            'cost': 1002,
+        })
+
+        assert form.is_valid()
+        product = form.save()
+
+        assert product.name == 'Portal Gun'
+        assert product.quantity == 1
+        assert product.cost == 1002
+        assert product.quality == 0.0
