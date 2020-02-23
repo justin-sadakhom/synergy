@@ -1,7 +1,8 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.forms import ModelForm
-from django.core.exceptions import ValidationError
+from django import forms
 
 
 # Custom validators
@@ -12,7 +13,34 @@ def validate_name(name: str):
         raise ValidationError('Name must have at least 2 characters')
 
     elif '  ' in name:
-        raise ValidationError('Do not input more than 2 spaces in a row')
+        raise ValidationError('Name cannot have more than 2 spaces in a row')
+
+    else:
+        for char in name:
+            if not (char.isalpha() or char.isnumeric() or char == ' '):
+                raise ValidationError('Name cannot have special characters')
+
+
+# Custom fields
+
+class NameField(forms.CharField):
+
+    def to_python(self, value):
+        """ Remove extra spaces in input. """
+
+        if value not in self.empty_values:
+            value = str(value)
+
+            if self.strip:
+                value = value.strip()
+
+            if '  ' in value:
+                value = value.replace('  ', ' ')
+
+        if value in self.empty_values:
+            return self.empty_value
+
+        return value
 
 
 # Database models
@@ -26,7 +54,7 @@ class Item(models.Model):
         quantity (int): How much of the item there is.
     """
 
-    name = models.CharField(max_length=30, validators=[validate_name])
+    name = models.CharField(max_length=30)
     quantity = models.IntegerField(validators=[MinValueValidator(0)])
 
     class Meta:
@@ -43,7 +71,9 @@ class Product(Item):
         quality (float): Quality rating, from a scale of 0.0 to 5.0.
     """
 
-    cost = models.DecimalField(max_digits=5, decimal_places=2)
+    cost = models.DecimalField(max_digits=5,
+                               decimal_places=2,
+                               validators=[MinValueValidator(0.0)])
     _quality = models.DecimalField(
         blank=True,
         default=0.0,
@@ -56,10 +86,6 @@ class Product(Item):
     def quality(self):
         return self._quality
 
-    @quality.setter
-    def quality(self, value):
-        self._quality = value
-
     def update_quality(self) -> None:
         """ Set quality to a new value based on [...] """
         raise NotImplementedError
@@ -69,10 +95,13 @@ class Product(Item):
             .format(name, self.cost, self.quantity)
 
 
-class ProductForm(ModelForm):
+class ProductForm(forms.ModelForm):
+
     class Meta:
         model = Product
-        fields = ['name', 'quantity', 'cost', '_quality']
+        fields = ['name', 'quantity', 'cost']
+
+    name = NameField(max_length=30)
 
 
 class ClientLogin(models.Model):
@@ -83,6 +112,7 @@ class ClientLogin(models.Model):
         password: Password to login.
 
     """
+
     username = models.CharField(max_length=20)
     password = models.CharField(max_length=40)
 
