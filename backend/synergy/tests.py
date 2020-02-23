@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from .models import Item
+from .models import Item, Product
 import pytest
 
 
@@ -21,3 +21,9 @@ def test_item_negative_quantity() -> None:
 
     with pytest.raises(ValidationError):
         item.full_clean()
+
+
+def test_product_str() -> None:
+
+    product = Product(name='Pesticide', quantity=12, cost=0.99)
+    assert str(product) == 'Pesticide – Price: $0.99, In Stock: 12'
