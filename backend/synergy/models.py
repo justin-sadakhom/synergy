@@ -64,18 +64,20 @@ class Product(Item):
         name (str): Name of the product.
         quantity (int): How much is available for a single order.
         cost (float): Cost per unit, in dollars.
-        quality (float): Quality rating, from a scale of 0.0 to 5.0.
+        _quality (float): Quality rating, from a scale of 0.0 to 5.0.
     """
 
-    cost = models.DecimalField(max_digits=5,
-                               decimal_places=2,
-                               validators=[MinValueValidator(0.0)])
+    cost = models.DecimalField(
+        decimal_places=2,
+        max_digits=6,
+        validators=[MinValueValidator(0.0)]
+    )
     _quality = models.DecimalField(
-        blank=True,
         default=0.0,
         max_digits=2,
         decimal_places=1,
-        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)],
+        db_column='quality'
     )
 
     @property
@@ -87,9 +89,82 @@ class Product(Item):
         raise NotImplementedError
 
     def __str__(self):
-        return '{0} – Price: ${1}, In Stock: {2}' \
-            .format(self.name, self.cost, self.quantity)
 
+        name = str(self.name).capitalize()
+
+        return '{0} – Price: ${1}, In Stock: {2}' \
+            .format(name, self.cost, self.quantity)
+
+
+class Request(Item):
+    """ A request for a Product that fits certain criteria.
+
+    Attributes:
+        name (str): Name of the desired product.
+        quantity (int): How much is wanted for a single order.
+        budget (Tuple[float, float]): Budget for the order.
+        _min_quality (float): Minimum desired quality rating.
+    """
+
+    @property
+    def min_quality(self):
+        return self._min_quality
+
+    # Fields that are only used to increase readability of budget.
+
+    _min_budget = models.DecimalField(
+        default=0.0,
+        max_digits=7,
+        decimal_places=2,
+        validators=[MinValueValidator(0.0)]
+    )
+    _max_budget = models.DecimalField(
+        default=0.0,
+        max_digits=7,
+        decimal_places=2,
+        validators=[MinValueValidator(0.0)]
+    )
+
+    # Actual fields.
+
+    budget = (_min_budget, _max_budget)
+
+    _min_quality = models.DecimalField(
+        blank=True,
+        default=0.0,
+        max_digits=2,
+        decimal_places=1,
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
+    )
+
+    def __str__(self):
+
+        name = str(self.name).capitalize()
+
+        return '{0} – Budget: ${1}-${2}, Quantity: {3}' \
+            .format(name, self.budget[0], self.budget[1], self.quantity)
+
+
+class ClientLogin(models.Model):
+    """ Information required for a client / supplier to login to the site.
+
+    Attributes:
+        username (str): Username to login.
+        password (str): Password to login.
+    """
+
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=40)
+
+    def __str__(self):
+
+        username = str(self.username).capitalize()
+
+        return "Username - {0], Password - {1}"\
+            .format(username, self.password)
+
+
+# Forms
 
 class ProductForm(forms.ModelForm):
 
@@ -98,24 +173,6 @@ class ProductForm(forms.ModelForm):
         fields = ['name', 'quantity', 'cost']
 
     name = NameField(max_length=30)
-
-
-class ClientLogin(models.Model):
-    """ Information required for a client/supplier to login to the site.
-
-    Attributes:
-        username: Username to login.
-        password: Password to login.
-
-    """
-
-    username = models.CharField(max_length=20)
-    password = models.CharField(max_length=40)
-
-    def __str__(self):
-        username = self.username.capitalize()
-        return "Username - {0], Password - {1}"\
-            .format(username, self.password)
 
 
 class LoginForm(ModelForm):
