@@ -7,7 +7,11 @@ from .models import ClientLogin, Product, ProductForm
 
 def form(request):
 
-    product_form_set = modelformset_factory(Product, form=ProductForm)
+    product_form_set = modelformset_factory(
+        Product,
+        form=ProductForm,
+        extra=0  # Prevents extra blank forms from rendering.
+    )
 
     if request.method == 'POST':
         formset = product_form_set(request.POST, request.FILES)
