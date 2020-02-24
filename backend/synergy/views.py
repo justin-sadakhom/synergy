@@ -1,4 +1,4 @@
-from django.forms import modelformset_factory
+from django.forms import modelform_factory, modelformset_factory
 from django.shortcuts import render
 from .models import ClientLogin, Product, ProductForm
 
@@ -7,22 +7,18 @@ from .models import ClientLogin, Product, ProductForm
 
 def form(request):
 
-    product_form_set = modelformset_factory(
-        Product,
-        form=ProductForm,
-        extra=0  # Prevents extra blank forms from rendering.
-    )
+    product_form = modelform_factory(Product, form=ProductForm)
 
     if request.method == 'POST':
-        formset = product_form_set(request.POST, request.FILES)
+        my_form = product_form(request.POST)
 
-        if formset.is_valid():
-            formset.save()
+        if my_form.is_valid():
+            my_form.save()
 
     else:
-        formset = product_form_set()
+        my_form = product_form()
 
-    return render(request, 'synergy/form.html', {'formset': formset})
+    return render(request, 'synergy/form.html', {'my_form': my_form})
 
 
 def login(request):

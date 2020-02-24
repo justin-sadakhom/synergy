@@ -31,7 +31,7 @@ class NameField(forms.CharField):
                 value = value.strip()
 
             if '  ' in value:
-                value = value.replace('  ', ' ')
+                value = normalize_spaces(value)
 
         if value in self.empty_values:
             return self.empty_value
@@ -179,3 +179,18 @@ class LoginForm(ModelForm):
     class Meta:
         model = ClientLogin
         fields = ['username', 'password']
+
+
+# Misc. functions
+
+def normalize_spaces(text: str) -> str:
+
+    if '  ' not in text:
+        return text
+
+    else:
+
+        while '  ' in text:
+            text = text.replace('  ', ' ')
+
+        return text
