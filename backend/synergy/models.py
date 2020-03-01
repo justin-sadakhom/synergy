@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django import forms
 
 
 # Custom validators
@@ -41,6 +40,7 @@ class Product(Item):
         name (str): Name of the product.
         quantity (int): How much is available for a single order.
         cost (float): Cost per unit, in dollars.
+        supplier (Supplier): The business supplying the product.
         _quality (float): Quality rating, from a scale of 0.0 to 5.0.
     """
 
@@ -49,6 +49,13 @@ class Product(Item):
         max_digits=6,
         validators=[MinValueValidator(0.0)]
     )
+
+    supplier = models.ForeignKey(
+        'synergy.Supplier',
+        on_delete=models.CASCADE,
+        null=True
+    )
+
     _quality = models.DecimalField(
         default=0.0,
         max_digits=2,
@@ -81,6 +88,7 @@ class Request(Item):
         quantity (int): How much is wanted for a single order.
         min_budget (float): Minimum budget for the order.
         max_budget (float): Maximum budget for the order.
+        client (Client): The business requesting the order.
         _min_quality (float): Minimum desired quality rating.
     """
 
@@ -96,11 +104,18 @@ class Request(Item):
         decimal_places=2,
         validators=[MinValueValidator(0.0)]
     )
+
     max_budget = models.DecimalField(
         default=0.0,
         max_digits=7,
         decimal_places=2,
         validators=[MinValueValidator(0.0)]
+    )
+
+    client = models.ForeignKey(
+        'synergy.Client',
+        on_delete=models.CASCADE,
+        null=True
     )
 
     _min_quality = models.DecimalField(
@@ -117,6 +132,57 @@ class Request(Item):
 
         return '{0} – Budget: ${1}-${2}, Quantity: {3}' \
             .format(name, self.budget[0], self.budget[1], self.quantity)
+
+
+class Business(models.Model):
+    """ An abstract class representing a business using the website.
+
+    Attributes:
+        name (str): Title of the business.
+        location (str): Where the business is located.
+    """
+
+    # Choices
+    DOMESTIC = 'domestic'
+    INTERNATIONAL = 'international'
+
+    LOCATION_CHOICES = (
+        (DOMESTIC, 'domestic'),
+        (INTERNATIONAL, 'international')
+    )
+
+    # Fields
+    name = models.CharField(max_length=20, validators=[validate_name])
+    location = models.CharField('location', max_length=13,
+                                choices=LOCATION_CHOICES)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+
+        name = str(self.name).capitalize()
+        location = str(self.location).capitalize()
+
+        return '{0} - {1}'.format(name, location)
+
+
+class Supplier(Business):
+    """ A business seeking to sell their goods.
+
+    Attributes:
+        _ethics_score: Ethics rating of the supplier on a scale of 0.0 to 5.0.
+    """
+
+    _ethics_score = 0
+
+    def _update_ethics_score(self, new_score: float) -> None:
+        """ Calculate and retrieve an updated ethics score. """
+        raise NotImplementedError
+
+
+class Client(Business):
+    """ A business seeking a partnership with a supplier. """
 
 
 class ClientLogin(models.Model):
