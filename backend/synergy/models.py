@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.forms import ModelForm
 from django import forms
 
 
@@ -15,28 +14,6 @@ def validate_name(name: str):
     for char in name:
         if not (char.isalpha() or char.isnumeric() or char == ' '):
             raise ValidationError('Name cannot have special characters')
-
-
-# Custom fields
-
-class NameField(forms.CharField):
-
-    def to_python(self, value):
-        """ Remove extra spaces in input. """
-
-        if value not in self.empty_values:
-            value = str(value)
-
-            if self.strip:
-                value = value.strip()
-
-            if '  ' in value:
-                value = normalize_spaces(value)
-
-        if value in self.empty_values:
-            return self.empty_value
-
-        return value
 
 
 # Database models
@@ -102,7 +79,8 @@ class Request(Item):
     Attributes:
         name (str): Name of the desired product.
         quantity (int): How much is wanted for a single order.
-        budget (Tuple[float, float]): Budget for the order.
+        min_budget (float): Minimum budget for the order.
+        max_budget (float): Maximum budget for the order.
         _min_quality (float): Minimum desired quality rating.
     """
 
@@ -112,22 +90,18 @@ class Request(Item):
 
     # Fields that are only used to increase readability of budget.
 
-    _min_budget = models.DecimalField(
+    min_budget = models.DecimalField(
         default=0.0,
         max_digits=7,
         decimal_places=2,
         validators=[MinValueValidator(0.0)]
     )
-    _max_budget = models.DecimalField(
+    max_budget = models.DecimalField(
         default=0.0,
         max_digits=7,
         decimal_places=2,
         validators=[MinValueValidator(0.0)]
     )
-
-    # Actual fields.
-
-    budget = (_min_budget, _max_budget)
 
     _min_quality = models.DecimalField(
         blank=True,
@@ -162,35 +136,3 @@ class ClientLogin(models.Model):
 
         return "Username - {0], Password - {1}"\
             .format(username, self.password)
-
-
-# Forms
-
-class ProductForm(forms.ModelForm):
-
-    class Meta:
-        model = Product
-        fields = ['name', 'quantity', 'cost']
-
-    name = NameField(max_length=30)
-
-
-class LoginForm(ModelForm):
-    class Meta:
-        model = ClientLogin
-        fields = ['username', 'password']
-
-
-# Misc. functions
-
-def normalize_spaces(text: str) -> str:
-
-    if '  ' not in text:
-        return text
-
-    else:
-
-        while '  ' in text:
-            text = text.replace('  ', ' ')
-
-        return text

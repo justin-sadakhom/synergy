@@ -1,11 +1,12 @@
-from django.forms import modelform_factory, modelformset_factory
+from django.forms import modelform_factory
 from django.shortcuts import render
-from .models import ClientLogin, Product, ProductForm
+from .forms import ProductForm, RequestForm
+from .models import Product, Request
 
 
 # Create your views here.
 
-def form(request):
+def submit_product(request):
 
     product_form = modelform_factory(Product, form=ProductForm)
 
@@ -18,22 +19,20 @@ def form(request):
     else:
         my_form = product_form()
 
-    return render(request, 'synergy/form.html', {'my_form': my_form})
+    return render(request, 'synergy/productform.html', {'my_form': my_form})
 
 
-def login(request):
+def submit_request(request):
 
-    login_set = modelformset_factory(
-        ClientLogin,
-        fields=('username', ' password')
-    )
+    request_form = modelform_factory(Request, form=RequestForm)
+
     if request.method == 'POST':
-        formset = login_set(request.POST, request.FILES)
+        this_form = request_form(request.POST)
 
-        if formset.is_valid():
-            formset.save()
+        if this_form.is_valid():
+            this_form.save()
 
     else:
-        formset = login_set()
+        this_form = request_form()
 
-    return render(request, 'synergy/login.html', {'formset': formset})
+    return render(request, 'synergy/requestform.html', {'this_form': this_form})

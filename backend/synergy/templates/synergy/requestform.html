@@ -1,0 +1,9 @@
+<h2>Request Input Form</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+    {{ this_form }}
+    </table>
+    <input type="submit" value="Submit">
+</form>

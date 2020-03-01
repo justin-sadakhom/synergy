@@ -18,5 +18,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('form/', include('synergy.urls')),
+    path('form/', include('synergy.urls')),
     path('admin/', admin.site.urls),
 ]
