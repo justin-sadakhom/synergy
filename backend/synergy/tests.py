@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from .models import Item, Product, ProductForm
+from .models import Item, Product, ProductForm, normalize_spaces
 import pytest
 
 """
@@ -10,6 +10,29 @@ Skip all tests marked with 'slow' using 'pytest -m "not slow"'.
 
 
 # Create your tests here.
+
+class TestHelperFunctions:
+
+    def test_normalize_spaces_no_space(self):
+        text = 'name'
+        assert normalize_spaces(text) == 'name'
+
+    def test_normalize_spaces_single_space(self):
+        text = 'my name'
+        assert normalize_spaces(text) == 'my name'
+
+    def test_normalize_spaces_double_space(self):
+        text = 'my  name'
+        assert normalize_spaces(text) == 'my name'
+
+    def test_normalize_spaces_triple_space(self):
+        text = 'my    name'
+        assert normalize_spaces(text) == 'my name'
+
+    def test_normalize_spaces_quad_space(self):
+        text = 'my     name'
+        assert normalize_spaces(text) == 'my name'
+
 
 class TestItem:
 
