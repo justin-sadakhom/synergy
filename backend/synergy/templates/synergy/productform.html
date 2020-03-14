@@ -1,9 +1,20 @@
-<h2>Product Input Form</h2>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'synergy/style.css' %}">
 
 <form method="post">
-    {% csrf_token %}
-    <table>
-    {{ my_form }}
-    </table>
-    <input type="submit" value="Submit">
+    <div id='product-page'>
+        <div class='body'>
+            <div class='right-box'></div>
+            <div class = 'left-box'>
+                {% load static %}
+                <img src="{% static 'synergy/logo.png' %}" alt='logo' id='logo'>
+                <h2>Product Input Form</h2>
+                {% csrf_token %}
+                <div class='left-box-text'>
+                    {{ my_form }}
+                </div>
+                <input type='submit' name='signup-button' value='Submit'/>
+            </div>
+        </div>>
+    </div>
 </form>
