@@ -1,0 +1,101 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: white;
+    font-size: 16px;
+    color: #777;
+    font-family: sans-serif;
+    font-weight: 300;
+}
+
+.body{
+    position: relative;
+    margin: 5% auto;
+    height: 600px;
+    top: 50px;
+    width: 60%;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    z-index: 2;
+    text-align:center;
+}
+
+.left-box{
+    position: absolute;
+    top: 0px;
+    right: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 50%;
+    height: 100%;
+}
+
+h2{
+    margin: 0 20 20px 0;
+    font-weight: 300;
+    font-size: 28px;
+    text-align: center;
+}
+
+input[type='text'], input[type='number']{
+    display: block;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 4px;
+    width: 70%;
+    height: 32px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #aaa;
+    font-family: sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+input[type="text"]:focus{
+    border-bottom:2px solid black;
+    transition: 1s;
+    outline:none;
+}
+
+input[type='submit']{
+    margin-bottom: 28px;
+    width: 30%;
+    height: 32px;
+    background: #f44336;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    font-family: sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+input[type='submit']:hover,
+input[type='submit']:focus{
+    background: orange;
+    transition: 0.2s ease;
+}
+.left-box-text{
+    text-align: left;
+    padding-left: 25%;
+}
+.right-box{
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 50%;
+    height: 100%;
+    background-image: url(B.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+img#logo{
+    width: 30%;
+}
