@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Product, Request, ClientLogin
+from .models import Product, Request
+from django.contrib.auth.forms import UserCreationForm
 
 
 # Custom fields
@@ -46,12 +47,12 @@ class RequestForm(forms.ModelForm):
 
     name = NameField(max_length=30)
 
-
+"""
 class LoginForm(ModelForm):
     class Meta:
-        model = ClientLogin
+        model = UserCreationForm
         fields = ['username', 'password']
-
+"""
 
 # Misc. functions
 

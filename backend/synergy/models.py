@@ -1,6 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+import os
+import hashlib
+from django.contrib.auth.models import User
 
 
 # Custom validators
@@ -186,19 +189,10 @@ class Client(Business):
 
 
 class ClientLogin(models.Model):
-    """ Information required for a client / supplier to login to the site.
+    """
+     Information required for a client / supplier to login to the site.
 
     Attributes:
         username (str): Username to login.
         password (str): Password to login.
     """
-
-    username = models.CharField(max_length=20)
-    password = models.CharField(max_length=40)
-
-    def __str__(self):
-
-        username = str(self.username).capitalize()
-
-        return "Username - {0], Password - {1}"\
-            .format(username, self.password)
