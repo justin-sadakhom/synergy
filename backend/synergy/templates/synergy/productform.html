@@ -1,6 +1,8 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'synergy/style.css' %}">
 
+{% csrf_token %}
+
 <form method="post">
     <div id='product-page'>
         <div class='body'>
@@ -9,7 +11,6 @@
                 {% load static %}
                 <img src="{% static 'synergy/logo.png' %}" alt='logo' id='logo'>
                 <h2>Product Input Form</h2>
-                {% csrf_token %}
                 <div class='left-box-text'>
                     {{ my_form }}
                 </div>

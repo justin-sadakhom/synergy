@@ -3,22 +3,22 @@ from django.shortcuts import render
 from .forms import ProductForm, RequestForm
 from .models import Product, Request
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import  login, authenticate
+
 
 # Create your views here.
-def signup(request):
-    if request.method =='POST':
+
+def sign_up(request):
+
+    if request.method == 'POST':
         signup_form = UserCreationForm(request.POST)
+
         if signup_form.is_valid():
             signup_form.save()
-            username = signup_form.cleaned_data.get('username')
-            raw_password = signup_form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
 
-        else:
-            signup_form = UserCreationForm()
-    return render(request, 'synergy/login.html')
+    else:
+        signup_form = UserCreationForm()
+
+    return render(request, 'synergy/login.html', {'signup_form': signup_form})
 
 
 def submit_product(request):

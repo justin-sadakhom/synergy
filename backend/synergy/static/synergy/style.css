@@ -2,7 +2,7 @@ body{
     margin: 0;
     padding: 0;
     background: white;
-    font-size: 16px;
+    font-size: 1vw;
     color: #777;
     font-family: sans-serif;
     font-weight: 300;
@@ -11,9 +11,9 @@ body{
 .body{
     position: relative;
     margin: 5% auto;
-    height: 600px;
     top: 50px;
     width: 60%;
+    padding-top: 34%;
     background: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
     z-index: 2;
@@ -22,10 +22,10 @@ body{
 
 .left-box{
     position: absolute;
-    top: 0px;
+    top: 0;
     right: 0;
     box-sizing: border-box;
-    padding: 40px;
+    padding: 5%;
     width: 50%;
     height: 100%;
 }
@@ -33,42 +33,40 @@ body{
 h2{
     margin: 0 20 20px 0;
     font-weight: 300;
-    font-size: 28px;
+    font-size: 1.5vw;
     text-align: center;
 }
 
 input[type='text'], input[type='number']{
     display: block;
     box-sizing: border-box;
-    margin-bottom: 20px;
-    padding: 4px;
+    margin-bottom: 2%;
     width: 70%;
-    height: 32px;
     border: none;
     outline: none;
     border-bottom: 2px solid #aaa;
     font-family: sans-serif;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 0.85vw;
     transition: 0.2s ease;
 }
 
-input[type="text"]:focus{
+input[type="text"]:focus, input[type='number']:focus{
     border-bottom:2px solid black;
     transition: 1s;
     outline:none;
 }
 
 input[type='submit']{
-    margin-bottom: 28px;
     width: 30%;
-    height: 32px;
+    height: 8%;
     background: #f44336;
     border: none;
     border-radius: 2px;
     color: white;
     font-family: sans-serif;
     font-weight: 500;
+    font-size: 80%;
     text-transform: uppercase;
     transition: 0.2s ease;
     cursor: pointer;

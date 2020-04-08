@@ -188,7 +188,7 @@ class Client(Business):
     """ A business seeking a partnership with a supplier. """
 
 
-class ClientLogin(models.Model):
+# class ClientLogin(models.Model):
     """
      Information required for a client / supplier to login to the site.
 
