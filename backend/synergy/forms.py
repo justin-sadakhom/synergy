@@ -1,7 +1,6 @@
-from django.forms import ModelForm
 from django import forms
-from .models import Product, Request
-from django.contrib.auth.forms import UserCreationForm
+from .models import CustomUser, Product, Request
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 # Custom fields
@@ -47,12 +46,28 @@ class RequestForm(forms.ModelForm):
 
     name = NameField(max_length=30)
 
-"""
-class LoginForm(ModelForm):
+
+class CustomUserCreationForm(UserCreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['email'].required = True
+
     class Meta:
-        model = UserCreationForm
-        fields = ['username', 'password']
-"""
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'job_function', 'job_level',
+                  'industry', 'company_name', 'company_website', 'country',
+                  'postal_code', 'email', 'password')
+
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'email')
+
 
 # Misc. functions
 

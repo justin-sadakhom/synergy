@@ -1,8 +1,7 @@
 from django.forms import modelform_factory
 from django.shortcuts import render
-from .forms import ProductForm, RequestForm
+from .forms import CustomUserCreationForm, ProductForm, RequestForm
 from .models import Product, Request
-from django.contrib.auth.forms import UserCreationForm
 
 
 # Create your views here.
@@ -10,13 +9,13 @@ from django.contrib.auth.forms import UserCreationForm
 def sign_up(request):
 
     if request.method == 'POST':
-        signup_form = UserCreationForm(request.POST)
+        signup_form = CustomUserCreationForm(request.POST)
 
         if signup_form.is_valid():
             signup_form.save()
 
     else:
-        signup_form = UserCreationForm()
+        signup_form = CustomUserCreationForm()
 
     return render(request, 'synergy/login.html', {'signup_form': signup_form})
 

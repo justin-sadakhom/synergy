@@ -1,9 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-import os
-import hashlib
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 
 # Custom validators
@@ -188,11 +186,96 @@ class Client(Business):
     """ A business seeking a partnership with a supplier. """
 
 
-# class ClientLogin(models.Model):
-    """
-     Information required for a client / supplier to login to the site.
+class CustomUser(AbstractUser):
 
-    Attributes:
-        username (str): Username to login.
-        password (str): Password to login.
-    """
+    END = 'END'
+    SPL = 'SPL'
+    MOP = 'MOP'
+    GEN = 'GEN'
+    SAM = 'SAM'
+    OTH = 'OTH'
+
+    JOB_FUNCTION_CHOICES = [
+        (None, '- Select -'),
+        (END, 'Engineering / Design'),
+        (SPL, 'Supply Chain / Procurement / Logistics'),
+        (MOP, 'Manufacturing / Operations'),
+        (GEN, 'General Management'),
+        (SAM, 'Sales & Marketing'),
+        (OTH, 'Other')
+    ]
+
+    EXC = 'EXC'
+    DIR = 'DIR'
+    MNG = 'MNG'
+    IND = 'IND'
+    OWN = 'OWN'
+
+    JOB_LEVEL_CHOICES = [
+        (None, '- Select -'),
+        (EXC, 'Executive'),
+        (DIR, 'Director'),
+        (MNG, 'Manager'),
+        (IND, 'Individual Contributor'),
+        (OWN, 'Owner')
+    ]
+
+    AERO = 'AERO'
+
+    INDUSTRY_CHOICES = [
+        (None, '- Select -'),
+        (AERO, 'Aerospace & Defense'),
+        (OTH, 'Other')
+    ]
+
+    CAN = 'CAN'
+
+    COUNTRY_CHOICES = [
+        (None, '- Select -'),
+        (CAN, 'Canada'),
+        (OTH, 'Other')
+    ]
+
+    # Fields
+
+    job_function = models.CharField(
+        max_length=3,
+        choices=JOB_FUNCTION_CHOICES,
+        null=True
+    )
+
+    job_level = models.CharField(
+        max_length=3,
+        choices=JOB_LEVEL_CHOICES,
+        null=True
+    )
+
+    industry = models.CharField(
+        max_length=4,
+        choices=INDUSTRY_CHOICES,
+        null=True
+    )
+
+    company_name = models.CharField(
+        max_length=30,
+        null=True
+    )
+
+    company_website = models.CharField(
+        max_length=25,
+        null=True
+    )
+
+    country = models.CharField(
+        max_length=25,
+        choices=COUNTRY_CHOICES,
+        null=True
+    )
+
+    postal_code = models.CharField(
+        max_length=7,
+        null=True
+    )
+
+    def __str__(self):
+        return self.first_name
