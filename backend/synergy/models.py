@@ -221,18 +221,65 @@ class CustomUser(AbstractUser):
     ]
 
     AERO = 'AERO'
+    AGRI = 'AGRI'
+    AUTO = 'AUTO'
+    BUSI = 'BUSI'
+    CHEM = 'CHEM'
+    CONS = 'CONS'
+    DIST = 'DIST'
+    EDUC = 'EDUC'
+    ELCE = 'ELCE'
+    ELCT = 'ELCT'
+    ENGI = 'ENGI'
+    FOOD = 'FOOD'
+    GOVE = 'GOVE'
+    MACH = 'MACH'
+    MANU = 'MANU'
+    MEDI = 'MEDI'
+    META = 'META'
+    MINI = 'MINI'
+    # OTHER
+    PAPE = 'PAPE'
+    PLAS = 'PLAS'
+    TEXT = 'TEXT'
+    TRAN = 'TRAN'
+    UTIL = 'UTIL'
 
     INDUSTRY_CHOICES = [
         (None, '- Select -'),
         (AERO, 'Aerospace & Defense'),
-        (OTH, 'Other')
+        (AGRI, 'Agriculture & Forestry'),
+        (AUTO, 'Automotive'),
+        (BUSI, 'Business'),
+        (CHEM, 'Chemicals'),
+        (CONS, 'Construction'),
+        (DIST, 'Distribution, Wholesale, Retail'),
+        (EDUC, 'Education'),
+        (ELCE, 'Electrical Equipment'),
+        (ELCT, 'Electronics'),
+        (ENGI, 'Engineering & Technical Services'),
+        (FOOD, 'Food, Beverage, Tobacco'),
+        (GOVE, 'Government & Military'),
+        (MACH, 'Machinery'),
+        (MANU, 'Manufacturing'),
+        (MEDI, 'Medical & Healthcare'),
+        (META, 'Metals - Raw, Formed, Fabricated'),
+        (MINI, 'Mining, Oil & Gas, Quarrying'),
+        (OTH, 'Other'),
+        (PAPE, 'Paper, Paper Products, Printing'),
+        (PLAS, 'Plastics & Rubber'),
+        (TEXT, 'Textiles, Apparel, Leather'),
+        (TRAN, 'Transportation & Logistics'),
+        (UTIL, 'Utilities & Telecommunications')
     ]
 
     CAN = 'CAN'
+    USA = 'USA'
 
     COUNTRY_CHOICES = [
         (None, '- Select -'),
         (CAN, 'Canada'),
+        (USA, 'United States'),
         (OTH, 'Other')
     ]
 
@@ -267,7 +314,7 @@ class CustomUser(AbstractUser):
     )
 
     country = models.CharField(
-        max_length=25,
+        max_length=3,
         choices=COUNTRY_CHOICES,
         null=True
     )

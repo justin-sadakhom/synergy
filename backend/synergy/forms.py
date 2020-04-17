@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import URLField, EmailField
+
 from .models import CustomUser, Product, Request
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
@@ -51,6 +53,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
+
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
@@ -60,6 +63,12 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('first_name', 'last_name', 'job_function', 'job_level',
                   'industry', 'company_name', 'company_website', 'country',
                   'postal_code', 'email', 'password')
+
+    first_name = NameField()
+    last_name = NameField()
+    company_name = NameField()
+    company_website = URLField()
+    email = EmailField()
 
 
 class CustomUserChangeForm(UserChangeForm):
