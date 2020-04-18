@@ -56,4 +56,8 @@ def submit_request(request):
 
 
 def success(request):
-    return HttpResponse("Account registration successful!")
+    return HttpResponse('Registration successful!')
+
+
+def home(request):
+    return render(request, 'synergy/home.html')

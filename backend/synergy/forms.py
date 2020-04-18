@@ -2,7 +2,7 @@ from django import forms
 from django.forms import EmailField
 
 from .models import CustomUser, Product, Request
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 
 
 # Custom fields
