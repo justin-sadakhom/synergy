@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils.translation import ugettext_lazy as _
 
 
 # Custom validators
@@ -185,20 +187,183 @@ class Client(Business):
     """ A business seeking a partnership with a supplier. """
 
 
-class ClientLogin(models.Model):
-    """ Information required for a client / supplier to login to the site.
+class UserManager(BaseUserManager):
+    """Define a model manager for User model with no username field."""
 
-    Attributes:
-        username (str): Username to login.
-        password (str): Password to login.
-    """
+    use_in_migrations = True
 
-    username = models.CharField(max_length=20)
-    password = models.CharField(max_length=40)
+    def _create_user(self, email, password, **extra_fields):
+        """Create and save a User with the given email and password."""
+
+        if not email:
+            raise ValueError('The given email must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        """Create and save a regular User with the given email and password."""
+
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        """Create and save a SuperUser with the given email and password."""
+
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(email, password, **extra_fields)
+
+
+class CustomUser(AbstractUser):
+
+    END = 'END'
+    SPL = 'SPL'
+    MOP = 'MOP'
+    GEN = 'GEN'
+    SAM = 'SAM'
+    OTH = 'OTH'
+
+    JOB_FUNCTION_CHOICES = [
+        (None, '- Select -'),
+        (END, 'Engineering / Design'),
+        (SPL, 'Supply Chain / Procurement / Logistics'),
+        (MOP, 'Manufacturing / Operations'),
+        (GEN, 'General Management'),
+        (SAM, 'Sales & Marketing'),
+        (OTH, 'Other')
+    ]
+
+    EXC = 'EXC'
+    DIR = 'DIR'
+    MNG = 'MNG'
+    IND = 'IND'
+    OWN = 'OWN'
+
+    JOB_LEVEL_CHOICES = [
+        (None, '- Select -'),
+        (EXC, 'Executive'),
+        (DIR, 'Director'),
+        (MNG, 'Manager'),
+        (IND, 'Individual Contributor'),
+        (OWN, 'Owner')
+    ]
+
+    AERO = 'AERO'
+    AGRI = 'AGRI'
+    AUTO = 'AUTO'
+    BUSI = 'BUSI'
+    CHEM = 'CHEM'
+    CONS = 'CONS'
+    DIST = 'DIST'
+    EDUC = 'EDUC'
+    ELCE = 'ELCE'
+    ELCT = 'ELCT'
+    ENGI = 'ENGI'
+    FOOD = 'FOOD'
+    GOVE = 'GOVE'
+    MACH = 'MACH'
+    MANU = 'MANU'
+    MEDI = 'MEDI'
+    META = 'META'
+    MINI = 'MINI'
+    PAPE = 'PAPE'
+    PLAS = 'PLAS'
+    TEXT = 'TEXT'
+    TRAN = 'TRAN'
+    UTIL = 'UTIL'
+
+    INDUSTRY_CHOICES = [
+        (None, '- Select -'),
+        (AERO, 'Aerospace & Defense'),
+        (AGRI, 'Agriculture & Forestry'),
+        (AUTO, 'Automotive'),
+        (BUSI, 'Business'),
+        (CHEM, 'Chemicals'),
+        (CONS, 'Construction'),
+        (DIST, 'Distribution, Wholesale, Retail'),
+        (EDUC, 'Education'),
+        (ELCE, 'Electrical Equipment'),
+        (ELCT, 'Electronics'),
+        (ENGI, 'Engineering & Technical Services'),
+        (FOOD, 'Food, Beverage, Tobacco'),
+        (GOVE, 'Government & Military'),
+        (MACH, 'Machinery'),
+        (MANU, 'Manufacturing'),
+        (MEDI, 'Medical & Healthcare'),
+        (META, 'Metals - Raw, Formed, Fabricated'),
+        (MINI, 'Mining, Oil & Gas, Quarrying'),
+        (OTH, 'Other'),
+        (PAPE, 'Paper, Paper Products, Printing'),
+        (PLAS, 'Plastics & Rubber'),
+        (TEXT, 'Textiles, Apparel, Leather'),
+        (TRAN, 'Transportation & Logistics'),
+        (UTIL, 'Utilities & Telecommunications')
+    ]
+
+    CAN = 'CAN'
+    USA = 'USA'
+
+    COUNTRY_CHOICES = [
+        (None, '- Select -'),
+        (CAN, 'Canada'),
+        (USA, 'United States'),
+        (OTH, 'Other')
+    ]
+
+    # Fields
+
+    job_function = models.CharField(
+        max_length=3,
+        choices=JOB_FUNCTION_CHOICES,
+        null=True
+    )
+
+    job_level = models.CharField(
+        max_length=3,
+        choices=JOB_LEVEL_CHOICES,
+        null=True
+    )
+
+    industry = models.CharField(
+        max_length=4,
+        choices=INDUSTRY_CHOICES,
+        null=True
+    )
+
+    company_name = models.CharField(
+        max_length=30,
+        null=True
+    )
+
+    country = models.CharField(
+        max_length=3,
+        choices=COUNTRY_CHOICES,
+        null=True
+    )
+
+    postal_code = models.CharField(
+        max_length=7,
+        null=True
+    )
+
+    username = None
+    email = models.EmailField(_('email address'), unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()  # Specify custom Manager.
 
     def __str__(self):
+        return self.first_name
 
-        username = str(self.username).capitalize()
-
-        return "Username - {0], Password - {1}"\
-            .format(username, self.password)
