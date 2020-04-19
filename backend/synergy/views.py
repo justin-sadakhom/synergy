@@ -1,16 +1,16 @@
 from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from .forms import CustomUserCreationForm, ProductForm, RequestForm
+from .forms import RegistrationForm, InfoForm, ProductForm, RequestForm
 from .models import Product, Request
 
 
 # Create your views here.
 
-def sign_up(request):
+def register(request):
 
     if request.method == 'POST':
-        signup_form = CustomUserCreationForm(request.POST, label_suffix='')
+        signup_form = RegistrationForm(request.POST, label_suffix='')
 
         if signup_form.is_valid():
             signup_form.save()
@@ -18,9 +18,26 @@ def sign_up(request):
             return redirect('success')
 
     else:
-        signup_form = CustomUserCreationForm(label_suffix='')
+        signup_form = RegistrationForm(label_suffix='')
 
-    return render(request, 'synergy/register.html', {'signup_form': signup_form})
+    return render(request, 'synergy/register.html',
+                  {'signup_form': signup_form})
+
+
+def more_info(request):
+
+    if request.method == 'POST':
+        info_form = InfoForm(request.POST, label_suffix='')
+
+        if info_form.is_valid():
+            info_form.save()
+
+            return redirect('success')
+
+    else:
+        info_form = InfoForm(label_suffix='')
+
+    return render(request, 'synergy/more_info.html', {'info_form': info_form})
 
 
 def submit_product(request):

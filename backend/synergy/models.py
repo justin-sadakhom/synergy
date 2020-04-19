@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db.models import URLField
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -328,6 +329,9 @@ class CustomUser(AbstractUser):
         null=True
     )
 
+    # TODO
+    # discipline = ...
+
     job_level = models.CharField(
         max_length=3,
         choices=JOB_LEVEL_CHOICES,
@@ -356,13 +360,15 @@ class CustomUser(AbstractUser):
         null=True
     )
 
+    company_website = URLField()
+
     username = None
     email = models.EmailField(_('email address'), unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    objects = UserManager()  # Specify custom Manager.
+    objects = UserManager()  # Specify custom Manager
 
     def __str__(self):
         return self.first_name

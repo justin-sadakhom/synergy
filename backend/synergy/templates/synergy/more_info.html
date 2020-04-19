@@ -1,0 +1,9 @@
+<h2>Tell us about yourself</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+    {{ info_form }}
+    </table>
+    <input type="submit" value="Confirm">
+</form>
