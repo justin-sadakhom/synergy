@@ -1,26 +1,53 @@
 from django.forms import modelform_factory
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from .forms import CustomUserCreationForm, ProductForm, RequestForm
+from .forms import RegistrationForm, InfoForm, ProductForm, RequestForm
 from .models import Product, Request
 
 
 # Create your views here.
 
-def sign_up(request):
+def register(request):
 
     if request.method == 'POST':
-        signup_form = CustomUserCreationForm(request.POST, label_suffix='')
+        signup_form = RegistrationForm(request.POST, label_suffix='')
 
         if signup_form.is_valid():
             signup_form.save()
 
-            return redirect('success')
+            return redirect('home')
 
     else:
-        signup_form = CustomUserCreationForm(label_suffix='')
+        signup_form = RegistrationForm(label_suffix='')
 
-    return render(request, 'synergy/register.html', {'signup_form': signup_form})
+    return render(request, 'synergy/register.html',
+                  {'signup_form': signup_form})
+
+
+def home(request):
+
+    if request.method == 'POST':
+        info_form = InfoForm(request.POST, label_suffix='')
+
+        if info_form.is_valid():
+
+            data = info_form.cleaned_data
+            request.user.job_function = data['job_function']
+            request.user.job_level = data['job_level']
+            request.user.industry = data['industry']
+            request.user.company_name = data['company_name']
+            request.user.company_website = data['company_website']
+            request.user.country = data['country']
+            request.user.postal_code = data['postal_code']
+
+            request.user.info_complete = 1
+            request.user.save()
+
+            return redirect('home')
+
+    else:
+        info_form = InfoForm(label_suffix='')
+
+    return render(request, 'synergy/home.html', {'info_form': info_form})
 
 
 def submit_product(request):
@@ -53,11 +80,3 @@ def submit_request(request):
         this_form = request_form()
 
     return render(request, 'synergy/requestform.html', {'this_form': this_form})
-
-
-def success(request):
-    return HttpResponse('Registration successful!')
-
-
-def home(request):
-    return render(request, 'synergy/home.html')

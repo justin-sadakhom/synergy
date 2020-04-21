@@ -1,8 +1,7 @@
 from django import forms
-from django.forms import EmailField
-
-from .models import CustomUser, Product, Request
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
+from .models import CustomUser, Product, Request
 
 
 # Custom fields
@@ -49,21 +48,39 @@ class RequestForm(forms.ModelForm):
     name = NameField(max_length=30)
 
 
-class CustomUserCreationForm(UserCreationForm):
+class RegistrationForm(UserCreationForm):
+    """ Form for account registration. """
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].required = True
-        self.fields['last_name'].required = True
-        self.fields['email'].required = True
+        self.fields['email'].label = 'Email'
+        self.fields['password1'].help_text = None
 
     class Meta:
         model = CustomUser
         fields = ('first_name', 'last_name', 'email')
 
-    first_name = NameField()
-    last_name = NameField()
-    email = EmailField()
+    first_name = NameField()  # Default max_length of 30
+    last_name = NameField(max_length=45)
+    password2 = None  # Disable second password field
+
+
+class InfoForm(ModelForm):
+    """ Form for filling out additional user information. """
+
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+
+        for field in ('company_website', 'postal_code', 'job_level'):
+            self.fields[field].required = False
+
+        for field in ('job_function', 'industry', 'company_name', 'country'):
+            self.fields[field].label_suffix = '*'
+
+    class Meta:
+        model = CustomUser
+        fields = ('job_function', 'job_level', 'industry', 'company_name',
+                  'company_website', 'country', 'postal_code')
 
 
 """
