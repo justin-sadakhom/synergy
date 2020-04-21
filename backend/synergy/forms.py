@@ -70,8 +70,12 @@ class InfoForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
+
         for field in ('company_website', 'postal_code', 'job_level'):
             self.fields[field].required = False
+
+        for field in ('job_function', 'industry', 'company_name', 'country'):
+            self.fields[field].label_suffix = '*'
 
     class Meta:
         model = CustomUser

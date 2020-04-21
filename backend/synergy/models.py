@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db.models import URLField
+from django.db.models import URLField, BooleanField
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -227,6 +227,9 @@ class UserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
 
+    def __init__(self, *args, **kwargs):
+        super(AbstractUser, self).__init__(*args, **kwargs)
+
     END = 'END'
     SPL = 'SPL'
     MOP = 'MOP'
@@ -360,7 +363,8 @@ class CustomUser(AbstractUser):
         null=True
     )
 
-    company_website = URLField()
+    company_website = URLField(null=True)
+    info_complete = BooleanField(default=False)
 
     username = None
     email = models.EmailField(_('email address'), unique=True)

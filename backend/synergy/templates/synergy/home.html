@@ -4,8 +4,20 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    <p>Welcome, {{ user }}!</p>
-    <p><a href="{% url 'logout' %}">Logout</a></p>
+    {% if user.info_complete %}
+        <p>Welcome, {{ user }}!</p>
+        <p><a href="{% url 'logout' %}">Logout</a></p>
+    {% else %}
+        <p>Welcome, {{ user }}! Tell us about yourself.</p>
+        <form method="post" content='text/html; charset=UTF-8'>
+            {% csrf_token %}
+            <table>
+            {{ info_form }}
+            </table>
+            <p>* required</p>
+            <input type="submit" value="Submit">
+        </form>
+    {% endif %}
 {% else %}
     <p>You are not logged in.</p>
     <a href="{% url 'login' %}">Login</a>
