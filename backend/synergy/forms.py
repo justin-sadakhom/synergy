@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.db import models
 from django.forms import ModelForm
-from .models import CustomUser, Product, Request
+from .models import CustomUser, Product, Request, Business
 
 
 # Custom fields
@@ -71,16 +72,29 @@ class InfoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
 
-        for field in ('company_website', 'postal_code', 'job_level'):
+        for field in ('website', 'postal_code'):
             self.fields[field].required = False
 
-        for field in ('job_function', 'industry', 'company_name', 'country'):
+        for field in ('industry', 'name', 'country'):
             self.fields[field].label_suffix = '*'
 
+        self.fields['name'].label = 'Company name'
+        self.fields['website'].label = 'Company website'
+
     class Meta:
-        model = CustomUser
-        fields = ('job_function', 'job_level', 'industry', 'company_name',
-                  'company_website', 'country', 'postal_code')
+        model = Business
+        fields = ('name', 'country', 'industry', 'postal_code', 'website')
+
+    job_function = forms.ChoiceField(
+        choices=CustomUser.JOB_FUNCTION_CHOICES,
+    )
+
+    job_level = forms.ChoiceField(
+        choices=CustomUser.JOB_LEVEL_CHOICES,
+    )
+
+    job_function.label_suffix = '*'
+    job_level.required = False
 
 
 """

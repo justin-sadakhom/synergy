@@ -1,7 +1,7 @@
 from django.forms import modelform_factory
 from django.shortcuts import redirect, render
 from .forms import RegistrationForm, InfoForm, ProductForm, RequestForm
-from .models import Product, Request
+from .models import Product, Request, Business
 
 
 # Create your views here.
@@ -31,13 +31,18 @@ def home(request):
         if info_form.is_valid():
 
             data = info_form.cleaned_data
+
+            business = Business()
+            business.name = data['name']
+            business.country = data['country']
+            business.industry = data['industry']
+            business.postal_code = data['postal_code']
+            business.website = data['website']
+            business.save()
+
+            request.user.company = business
             request.user.job_function = data['job_function']
             request.user.job_level = data['job_level']
-            request.user.industry = data['industry']
-            request.user.company_name = data['company_name']
-            request.user.company_website = data['company_website']
-            request.user.country = data['country']
-            request.user.postal_code = data['postal_code']
 
             request.user.info_complete = 1
             request.user.save()

@@ -53,12 +53,6 @@ class Product(Item):
         validators=[MinValueValidator(0.0)]
     )
 
-    supplier = models.ForeignKey(
-        'synergy.Supplier',
-        on_delete=models.CASCADE,
-        null=True
-    )
-
     _quality = models.DecimalField(
         default=0.0,
         max_digits=2,
@@ -115,12 +109,6 @@ class Request(Item):
         validators=[MinValueValidator(0.0)]
     )
 
-    client = models.ForeignKey(
-        'synergy.Client',
-        on_delete=models.CASCADE,
-        null=True
-    )
-
     _min_quality = models.DecimalField(
         blank=True,
         default=0.0,
@@ -146,120 +134,16 @@ class Business(models.Model):
     """
 
     # Choices
-    DOMESTIC = 'domestic'
-    INTERNATIONAL = 'international'
 
-    LOCATION_CHOICES = (
-        (DOMESTIC, 'domestic'),
-        (INTERNATIONAL, 'international')
-    )
-
-    # Fields
-    name = models.CharField(max_length=20, validators=[validate_name])
-    location = models.CharField('location', max_length=13,
-                                choices=LOCATION_CHOICES)
-
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-
-        name = str(self.name).capitalize()
-        location = str(self.location).capitalize()
-
-        return '{0} - {1}'.format(name, location)
-
-
-class Supplier(Business):
-    """ A business seeking to sell their goods.
-
-    Attributes:
-        _ethics_score: Ethics rating of the supplier on a scale of 0.0 to 5.0.
-    """
-
-    _ethics_score = 0
-
-    def _update_ethics_score(self, new_score: float) -> None:
-        """ Calculate and retrieve an updated ethics score. """
-        raise NotImplementedError
-
-
-class Client(Business):
-    """ A business seeking a partnership with a supplier. """
-
-
-class UserManager(BaseUserManager):
-    """Define a model manager for User model with no username field."""
-
-    use_in_migrations = True
-
-    def _create_user(self, email, password, **extra_fields):
-        """Create and save a User with the given email and password."""
-
-        if not email:
-            raise ValueError('The given email must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(self, email, password=None, **extra_fields):
-        """Create and save a regular User with the given email and password."""
-
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
-
-    def create_superuser(self, email, password, **extra_fields):
-        """Create and save a SuperUser with the given email and password."""
-
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self._create_user(email, password, **extra_fields)
-
-
-class CustomUser(AbstractUser):
-
-    def __init__(self, *args, **kwargs):
-        super(AbstractUser, self).__init__(*args, **kwargs)
-
-    END = 'END'
-    SPL = 'SPL'
-    MOP = 'MOP'
-    GEN = 'GEN'
-    SAM = 'SAM'
+    CAN = 'CAN'
+    USA = 'USA'
     OTH = 'OTH'
 
-    JOB_FUNCTION_CHOICES = [
+    COUNTRY_CHOICES = [
         (None, '- Select -'),
-        (END, 'Engineering / Design'),
-        (SPL, 'Supply Chain / Procurement / Logistics'),
-        (MOP, 'Manufacturing / Operations'),
-        (GEN, 'General Management'),
-        (SAM, 'Sales & Marketing'),
+        (CAN, 'Canada'),
+        (USA, 'United States'),
         (OTH, 'Other')
-    ]
-
-    EXC = 'EXC'
-    DIR = 'DIR'
-    MNG = 'MNG'
-    IND = 'IND'
-    OWN = 'OWN'
-
-    JOB_LEVEL_CHOICES = [
-        (None, '- Select -'),
-        (EXC, 'Executive'),
-        (DIR, 'Director'),
-        (MNG, 'Manager'),
-        (IND, 'Individual Contributor'),
-        (OWN, 'Owner')
     ]
 
     AERO = 'AERO'
@@ -314,14 +198,107 @@ class CustomUser(AbstractUser):
         (UTIL, 'Utilities & Telecommunications')
     ]
 
-    CAN = 'CAN'
-    USA = 'USA'
+    # Fields
 
-    COUNTRY_CHOICES = [
+    name = models.CharField(max_length=30)
+
+    country = models.CharField(
+        max_length=3,
+        choices=COUNTRY_CHOICES
+    )
+
+    industry = models.CharField(
+        max_length=4,
+        choices=INDUSTRY_CHOICES
+    )
+
+    postal_code = models.CharField(
+        max_length=7,
+        null=True
+    )
+
+    website = URLField(
+        null=True
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class UserManager(BaseUserManager):
+    """Define a model manager for User model with no username field."""
+
+    use_in_migrations = True
+
+    def _create_user(self, email, password, **extra_fields):
+        """Create and save a User with the given email and password."""
+
+        if not email:
+            raise ValueError('The given email must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        """Create and save a regular User with the given email and password."""
+
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        """Create and save a SuperUser with the given email and password."""
+
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(email, password, **extra_fields)
+
+
+class CustomUser(AbstractUser):
+
+    def __init__(self, *args, **kwargs):
+        super(AbstractUser, self).__init__(*args, **kwargs)
+
+    # Choices
+
+    END = 'END'
+    SPL = 'SPL'
+    MOP = 'MOP'
+    GEN = 'GEN'
+    SAM = 'SAM'
+    OTH = 'OTH'
+
+    JOB_FUNCTION_CHOICES = [
         (None, '- Select -'),
-        (CAN, 'Canada'),
-        (USA, 'United States'),
+        (END, 'Engineering / Design'),
+        (SPL, 'Supply Chain / Procurement / Logistics'),
+        (MOP, 'Manufacturing / Operations'),
+        (GEN, 'General Management'),
+        (SAM, 'Sales & Marketing'),
         (OTH, 'Other')
+    ]
+
+    EXC = 'EXC'
+    DIR = 'DIR'
+    MNG = 'MNG'
+    IND = 'IND'
+    OWN = 'OWN'
+
+    JOB_LEVEL_CHOICES = [
+        (None, '- Select -'),
+        (EXC, 'Executive'),
+        (DIR, 'Director'),
+        (MNG, 'Manager'),
+        (IND, 'Individual Contributor'),
+        (OWN, 'Owner')
     ]
 
     # Fields
@@ -332,38 +309,18 @@ class CustomUser(AbstractUser):
         null=True
     )
 
-    # TODO
-    # discipline = ...
-
     job_level = models.CharField(
         max_length=3,
         choices=JOB_LEVEL_CHOICES,
         null=True
     )
 
-    industry = models.CharField(
-        max_length=4,
-        choices=INDUSTRY_CHOICES,
+    company = models.OneToOneField(
+        Business,
+        on_delete=models.CASCADE,
         null=True
     )
 
-    company_name = models.CharField(
-        max_length=30,
-        null=True
-    )
-
-    country = models.CharField(
-        max_length=3,
-        choices=COUNTRY_CHOICES,
-        null=True
-    )
-
-    postal_code = models.CharField(
-        max_length=7,
-        null=True
-    )
-
-    company_website = URLField(null=True)
     info_complete = BooleanField(default=False)
 
     username = None
