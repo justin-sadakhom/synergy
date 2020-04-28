@@ -1,6 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.db import models
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.forms import ModelForm
 from .models import CustomUser, Product, Request, Business
 
@@ -54,6 +53,10 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
+
+        # for field in self.fields:
+        #    self.fields[field].label = ''
+
         self.fields['email'].label = 'Email'
         self.fields['password1'].help_text = None
 
@@ -96,6 +99,13 @@ class InfoForm(ModelForm):
     job_function.label_suffix = '*'
     job_level.required = False
 
+
+class LoginForm(AuthenticationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['placeholder'] = 'Email Address'
+        self.fields['password'].widget.attrs['placeholder'] = 'Password'
 
 """
 class CustomUserChangeForm(UserChangeForm):

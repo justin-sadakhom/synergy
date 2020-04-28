@@ -1,6 +1,7 @@
+from django.contrib.auth.views import LoginView
 from django.forms import modelform_factory
 from django.shortcuts import redirect, render
-from .forms import RegistrationForm, InfoForm, ProductForm, RequestForm
+from .forms import RegistrationForm, InfoForm, ProductForm, RequestForm, LoginForm
 from .models import Product, Request, Business
 
 
@@ -53,6 +54,14 @@ def home(request):
         info_form = InfoForm(label_suffix='')
 
     return render(request, 'synergy/home.html', {'info_form': info_form})
+
+
+class CustomLoginView(LoginView):
+
+    def __init__(self, *args, **kwargs):
+        super(LoginView, self).__init__(*args, **kwargs)
+
+    form_class = LoginForm
 
 
 def submit_product(request):
