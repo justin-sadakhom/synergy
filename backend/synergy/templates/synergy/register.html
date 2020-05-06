@@ -17,12 +17,12 @@
                         <h2>Welcome! <br>Sign in to Synergy</h2>
                     </div>
                     <label id="text"></label><br>
-                    <form method="post"}>
+                    <form method="post">
                     {% csrf_token %}
                     <div class='sign-box-text'>
                         {{ form.username }}
                         {{ form.password }}
-                        <label id='text'>Forgot Password?</label><br>
+                        <label id='text'><a href="{% url 'password_change' %}">Forgot Password?</a></label><br>
                     </div>
                     <input type='submit' name='signup-button' value='Login'/>
                     </form>
