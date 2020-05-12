@@ -1,7 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.forms import ModelForm
-from .models import CustomUser, Product, Request
+from .models import CustomUser, Product, Request, Business
 
 
 # Custom fields
@@ -53,8 +53,14 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
+
         self.fields['email'].label = 'Email'
         self.fields['password1'].help_text = None
+
+        self.fields['first_name'].widget.attrs['placeholder'] = 'First Name'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email Address'
+        self.fields['password1'].widget.attrs['placeholder'] = 'Password'
 
     class Meta:
         model = CustomUser
@@ -71,25 +77,37 @@ class InfoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
 
-        for field in ('company_website', 'postal_code', 'job_level'):
+        for field in ('website', 'postal_code'):
             self.fields[field].required = False
 
-        for field in ('job_function', 'industry', 'company_name', 'country'):
+        for field in ('industry', 'name', 'country'):
             self.fields[field].label_suffix = '*'
 
-    class Meta:
-        model = CustomUser
-        fields = ('job_function', 'job_level', 'industry', 'company_name',
-                  'company_website', 'country', 'postal_code')
-
-
-"""
-class CustomUserChangeForm(UserChangeForm):
+        self.fields['name'].label = 'Company name'
+        self.fields['website'].label = 'Company website'
 
     class Meta:
-        model = CustomUser
-        fields = ('username', 'email')
-"""
+        model = Business
+        fields = ('name', 'country', 'industry', 'postal_code', 'website')
+
+    job_function = forms.ChoiceField(
+        choices=CustomUser.JOB_FUNCTION_CHOICES,
+    )
+
+    job_level = forms.ChoiceField(
+        choices=CustomUser.JOB_LEVEL_CHOICES,
+    )
+
+    job_function.label_suffix = '*'
+    job_level.required = False
+
+
+class LoginForm(AuthenticationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['placeholder'] = 'Email Address'
+        self.fields['password'].widget.attrs['placeholder'] = 'Password'
 
 
 # Misc. functions

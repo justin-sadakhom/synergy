@@ -1,0 +1,32 @@
+<head>
+    <title>Sign up / Sign in</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'synergy/login.css' %}">
+</head>
+
+<body>
+    <div id="registration">
+        <div class="body">
+            <div class="sign-up-page">
+                <div class="pic-box"></div>
+                <div class="sign-box">
+                    <a href="{% url 'register' %}" class="button">Register</a>
+                    <div class='title'>
+                        {% load static %}
+                        <img src="{% static 'synergy/logo.png' %}" alt='logo' id='logo'>
+                        <h2>Welcome! <br>Sign in to Synergy</h2>
+                    </div>
+                    <form method="post">
+                    {% csrf_token %}
+                    <div class='sign-box-text'>
+                        {{ form.username }}
+                        {{ form.password }}
+                        <label id='text'><a href="{% url 'password_reset' %}">Forgot Password?</a></label><br>
+                    </div>
+                    <input type='submit' name='signup-button' value='Login'/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
