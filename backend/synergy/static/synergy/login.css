@@ -23,29 +23,17 @@ body{
     z-index: 2;
     text-align:left;
 }
-#sign-in-page{
+.sign-up-page{
     display: block;
-    visibility: hidden;
-}
-#sign-up-page{
-    display: block;
-    visibility: visible;
 }
 .sign-box{
     position: absolute;
     top: 0;
+    right: 0;
     box-sizing: border-box;
     padding: 5%;
     width: 50%;
     height: 100%;
-}
-
-#sign-up{
-    left: 0;
-}
-
-#sign-in{
-    right: 0;
 }
 
 h2{
@@ -60,7 +48,7 @@ input[type='text']{
     display: inline-block;
     box-sizing: border-box;
     border-radius: 4px;
-    margin: 0.25vw 0;
+    margin: 0.5vw 0;
     padding: 1vw 1.2vw;
     border: 1px solid #cccccc;
     width: 100%;
@@ -70,11 +58,26 @@ input[type='text']{
     font-size: 1vw;
 }
 
-#name{
-    width: 50%;
+input[type='password']{
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin: 0.5vw 0;
+    padding: 1vw 1.2vw;
+    border: 1px solid #cccccc;
+    width: 100%;
+    outline: none;
+    font-family: sans-serif;
+    font-weight: 400;
+    font-size: 1vw;
 }
 
 input[type="text"]:focus{
+    border:1px solid lightblue;
+    outline:none;
+}
+
+input[type="password"]:focus{
     border:1px solid lightblue;
     outline:none;
 }
@@ -91,6 +94,7 @@ input[type='submit']{
     font-family: sans-serif;
     font-weight: 500;
     font-size: 1vw;
+    transition: 0.2s ease;
     cursor: pointer;
 }
 
@@ -108,21 +112,15 @@ label#text{
 .pic-box{
     position: absolute;
     top: 0;
+    left: 0;
     box-sizing: border-box;
     padding: 40px;
     width: 55%;
     height: 100%;
+    background-image: url(left1.png);
     background-size: 25vw;
     background-position: center;
     background-repeat: no-repeat;
-}
-#pic-up{
-    right: 0;
-    background-image: url(right2.png)
-}
-#pic-in{
-    left: 0;
-    background-image: url(left1.png)
 }
 
 .title{
@@ -133,4 +131,9 @@ label#text{
 img#logo{
     width: 30%;
     float: left;
+}
+
+a {
+    color: inherit;
+    text-decoration: none currentcolor solid;
 }

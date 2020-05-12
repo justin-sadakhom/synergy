@@ -1,32 +1,32 @@
 <head>
-    <title>Sign up / Sign in</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'synergy/register.css' %}">
+    <title>Registration</title>
+    <link rel="stylesheet" href="register.css">
 </head>
 
 <body>
     <div id="registration">
         <div class="body">
-            <div class="sign-up-page">
-                <div class="pic-box">
-                </div>
-                <div class="sign-box">
+            <div id="sign-up-page">
+                <div class="sign-box" id='sign-up'>
+                    <a href="{% url 'login' %}" class="button">Login</a>
                     <div class='title'>
                         {% load static %}
                         <img src="{% static 'synergy/logo.png' %}" alt='logo' id='logo'>
-                        <h2>Welcome! <br>Sign in to Synergy</h2>
+                        <h2>Welcome! <br>Create an account</h2>
                     </div>
-                    <label id="text"></label><br>
                     <form method="post">
                     {% csrf_token %}
                     <div class='sign-box-text'>
-                        {{ form.username }}
-                        {{ form.password }}
-                        <label id='text'><a href="{% url 'password_change' %}">Forgot Password?</a></label><br>
+                        <div class='first-last-name'>
+                            {{ signup_form.first_name }} {{ signup_form.last_name }}
+                        </div>
+                        {{ signup_form.email }}
+                        {{ signup_form.password1 }}
                     </div>
-                    <input type='submit' name='signup-button' value='Login'/>
+                    <input type='submit' name='signup-button' value='Register'/>
                     </form>
                 </div>
+                <div class="pic-box" id='pic-up'></div>
             </div>
         </div>
     </div>
