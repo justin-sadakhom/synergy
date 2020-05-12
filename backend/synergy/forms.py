@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.forms import ModelForm
+from django.utils.translation import ugettext_lazy as _
 from .models import CustomUser, Product, Request, Business
 
 
@@ -108,6 +109,12 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Email Address'
         self.fields['password'].widget.attrs['placeholder'] = 'Password'
+
+    error_messages = {
+        'invalid_login': _(
+            'Wrong password. Try again.'
+        ),
+    }
 
 
 # Misc. functions
