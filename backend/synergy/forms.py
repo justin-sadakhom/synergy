@@ -54,11 +54,13 @@ class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
 
-        # for field in self.fields:
-        #    self.fields[field].label = ''
-
         self.fields['email'].label = 'Email'
         self.fields['password1'].help_text = None
+
+        self.fields['first_name'].widget.attrs['placeholder'] = 'First Name'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email Address'
+        self.fields['password1'].widget.attrs['placeholder'] = 'Password'
 
     class Meta:
         model = CustomUser
@@ -106,14 +108,6 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Email Address'
         self.fields['password'].widget.attrs['placeholder'] = 'Password'
-
-"""
-class CustomUserChangeForm(UserChangeForm):
-
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'email')
-"""
 
 
 # Misc. functions
