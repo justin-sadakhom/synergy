@@ -58,10 +58,12 @@ class RegistrationForm(UserCreationForm):
         self.fields['email'].label = 'Email'
         self.fields['password1'].help_text = None
 
-        self.fields['first_name'].widget.attrs['placeholder'] = 'First Name'
-        self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
-        self.fields['email'].widget.attrs['placeholder'] = 'Email Address'
-        self.fields['password1'].widget.attrs['placeholder'] = 'Password'
+        self.fields['first_name'].widget.attrs = {'id': 'first-name',
+                                                  'placeholder': 'First Name'}
+        self.fields['last_name'].widget.attrs = {'id': 'last-name',
+                                                 'placeholder': 'Last Name'}
+        self.fields['email'].widget.attrs = {'placeholder': 'Email Address'}
+        self.fields['password1'].widget.attrs = {'placeholder': 'Password'}
 
     class Meta:
         model = CustomUser
