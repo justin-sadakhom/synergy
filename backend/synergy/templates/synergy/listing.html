@@ -1,0 +1,22 @@
+<h2>List Your Business</h2>
+
+{% if user.info_complete and not user.verified %}
+    <p>You've already submitted a listing!
+    Your request is currently under review.</p>
+
+{% elif user.info_complete and user.verified %}
+    <p>Your listing is already on display!
+    For security purposes, we're limiting each user to one listing.</p>
+
+{% else %}
+    <p>Complete this form to begin the listing process.</p>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+        {{ info_form }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+{% endif %}
+

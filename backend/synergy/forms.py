@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.forms import ModelForm
+from django.utils.translation import ugettext_lazy as _
 from .models import CustomUser, Product, Request, Business
 
 
@@ -57,10 +58,12 @@ class RegistrationForm(UserCreationForm):
         self.fields['email'].label = 'Email'
         self.fields['password1'].help_text = None
 
-        self.fields['first_name'].widget.attrs['placeholder'] = 'First Name'
-        self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
-        self.fields['email'].widget.attrs['placeholder'] = 'Email Address'
-        self.fields['password1'].widget.attrs['placeholder'] = 'Password'
+        self.fields['first_name'].widget.attrs = {'id': 'first-name',
+                                                  'placeholder': 'First Name'}
+        self.fields['last_name'].widget.attrs = {'id': 'last-name',
+                                                 'placeholder': 'Last Name'}
+        self.fields['email'].widget.attrs = {'placeholder': 'Email Address'}
+        self.fields['password1'].widget.attrs = {'placeholder': 'Password'}
 
     class Meta:
         model = CustomUser
@@ -90,16 +93,15 @@ class InfoForm(ModelForm):
         model = Business
         fields = ('name', 'country', 'industry', 'postal_code', 'website')
 
+    job_title = forms.CharField(
+        max_length=30,
+        label_suffix='*'
+    )
+
     job_function = forms.ChoiceField(
         choices=CustomUser.JOB_FUNCTION_CHOICES,
+        label_suffix='*'
     )
-
-    job_level = forms.ChoiceField(
-        choices=CustomUser.JOB_LEVEL_CHOICES,
-    )
-
-    job_function.label_suffix = '*'
-    job_level.required = False
 
 
 class LoginForm(AuthenticationForm):
@@ -108,6 +110,12 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Email Address'
         self.fields['password'].widget.attrs['placeholder'] = 'Password'
+
+    error_messages = {
+        'invalid_login': _(
+            'Wrong password. Try again.'
+        ),
+    }
 
 
 # Misc. functions

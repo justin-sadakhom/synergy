@@ -2,7 +2,7 @@ body{
     margin: 0;
     padding: 0;
     background: white;
-    background-image: url(background.jpg);
+    background-image: url(background.png);
     background-repeat: no-repeat;
     background-size: cover;
     font-size: 1vw;
@@ -56,34 +56,8 @@ h2{
     color: black;
 }
 
-input[type='text']{
-    display: inline-block;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin: 0.25vw 0;
-    padding: 1vw 1.2vw;
-    border: 1px solid #cccccc;
-    width: 100%;
-    outline: none;
-    font-family: sans-serif;
-    font-weight: 400;
-    font-size: 1vw;
-}
-
-input[type='password']{
-    display: inline-block;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin: 0.25vw 0;
-    padding: 1vw 1.2vw;
-    border: 1px solid #cccccc;
-    width: 100%;
-    outline: none;
-    font-family: sans-serif;
-    font-weight: 400;
-    font-size: 1vw;
-}
-
+input[type='text'],
+input[type='password'],
 input[type='email']{
     display: inline-block;
     box-sizing: border-box;
@@ -101,7 +75,7 @@ input[type='email']{
 #first-name{
     margin-right: 1%;
 }
-#first-name, #last-name{
+.first-last-name input{
     width: 49.5%;
 }
 
@@ -174,4 +148,13 @@ label#text{
 img#logo{
     width: 30%;
     float: left;
+}
+
+a {
+    color: inherit;
+    text-decoration: none currentcolor solid;
+}
+
+p{
+    text-align: center;
 }
