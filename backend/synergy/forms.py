@@ -93,16 +93,15 @@ class InfoForm(ModelForm):
         model = Business
         fields = ('name', 'country', 'industry', 'postal_code', 'website')
 
+    job_title = forms.CharField(
+        max_length=30,
+        label_suffix='*'
+    )
+
     job_function = forms.ChoiceField(
         choices=CustomUser.JOB_FUNCTION_CHOICES,
+        label_suffix='*'
     )
-
-    job_level = forms.ChoiceField(
-        choices=CustomUser.JOB_LEVEL_CHOICES,
-    )
-
-    job_function.label_suffix = '*'
-    job_level.required = False
 
 
 class LoginForm(AuthenticationForm):

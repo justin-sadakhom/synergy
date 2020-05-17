@@ -45,7 +45,7 @@ def home(request):
             request.user.job_function = data['job_function']
             request.user.job_level = data['job_level']
 
-            request.user.info_complete = 1
+            request.user.verified = 1
             request.user.save()
 
             return redirect('home')

@@ -221,6 +221,9 @@ class Business(models.Model):
         null=True
     )
 
+    class Meta:
+        verbose_name_plural = "businesses"
+
     def __str__(self):
         return self.name
 
@@ -286,22 +289,12 @@ class CustomUser(AbstractUser):
         (OTH, 'Other')
     ]
 
-    EXC = 'EXC'
-    DIR = 'DIR'
-    MNG = 'MNG'
-    IND = 'IND'
-    OWN = 'OWN'
-
-    JOB_LEVEL_CHOICES = [
-        (None, '- Select -'),
-        (EXC, 'Executive'),
-        (DIR, 'Director'),
-        (MNG, 'Manager'),
-        (IND, 'Individual Contributor'),
-        (OWN, 'Owner')
-    ]
-
     # Fields
+
+    job_title = models.CharField(
+        max_length=30,
+        null=True
+    )
 
     job_function = models.CharField(
         max_length=3,
@@ -309,19 +302,14 @@ class CustomUser(AbstractUser):
         null=True
     )
 
-    job_level = models.CharField(
-        max_length=3,
-        choices=JOB_LEVEL_CHOICES,
-        null=True
-    )
-
-    company = models.OneToOneField(
-        Business,
+    company = models.ForeignKey(
+        'Business',
         on_delete=models.CASCADE,
         null=True
     )
 
     info_complete = BooleanField(default=False)
+    verified = BooleanField(default=False)
 
     username = None
     email = models.EmailField(_('email address'), unique=True)
