@@ -1,11 +1,22 @@
 from django.contrib.auth.views import LoginView
-from django.forms import modelform_factory
 from django.shortcuts import redirect, render
-from .forms import RegistrationForm, InfoForm, ProductForm, RequestForm, LoginForm
-from .models import Product, Request, Business
+from .forms import InfoForm, LoginForm, RegistrationForm
+from .models import Business
 
 
 # Create your views here.
+
+class CustomLoginView(LoginView):
+
+    def __init__(self, *args, **kwargs):
+        super(LoginView, self).__init__(*args, **kwargs)
+
+    form_class = LoginForm
+
+
+def home(request):
+    return render(request, 'synergy/home.html')
+
 
 def register(request):
 
@@ -24,7 +35,7 @@ def register(request):
                   {'signup_form': signup_form})
 
 
-def home(request):
+def listing(request):
 
     if request.method == 'POST':
         info_form = InfoForm(request.POST, label_suffix='')
@@ -45,7 +56,7 @@ def home(request):
             request.user.job_function = data['job_function']
             request.user.job_level = data['job_level']
 
-            request.user.verified = 1
+            request.user.info_complete = 1
             request.user.save()
 
             return redirect('home')
@@ -53,17 +64,10 @@ def home(request):
     else:
         info_form = InfoForm(label_suffix='')
 
-    return render(request, 'synergy/home.html', {'info_form': info_form})
+    return render(request, 'synergy/listing.html', {'info_form': info_form})
 
 
-class CustomLoginView(LoginView):
-
-    def __init__(self, *args, **kwargs):
-        super(LoginView, self).__init__(*args, **kwargs)
-
-    form_class = LoginForm
-
-
+"""
 def submit_product(request):
 
     product_form = modelform_factory(Product, form=ProductForm)
@@ -94,3 +98,5 @@ def submit_request(request):
         this_form = request_form()
 
     return render(request, 'synergy/requestform.html', {'this_form': this_form})
+"""
+

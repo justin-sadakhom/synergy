@@ -1,10 +1,7 @@
-from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    # path('forms/product/', views.submit_product),
-    # path('forms/request/', views.submit_request),
     path('home/', views.home, name='home'),
     path(
         'accounts/login/',
@@ -15,4 +12,8 @@ urlpatterns = [
     ),
     path('accounts/register/', views.register, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('listings/', views.listing, name='listing')
+
+    # path('forms/product/', views.submit_product),
+    # path('forms/request/', views.submit_request),
 ]
