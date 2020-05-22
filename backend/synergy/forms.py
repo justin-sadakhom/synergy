@@ -63,7 +63,8 @@ class RegistrationForm(UserCreationForm):
         self.fields['last_name'].widget.attrs = {'id': 'last-name',
                                                  'placeholder': 'Last Name'}
         self.fields['email'].widget.attrs = {'placeholder': 'Email Address'}
-        self.fields['password1'].widget.attrs = {'placeholder': 'Password'}
+        self.fields['password1'].widget.attrs = {'id': 'pwd',
+                                                 'placeholder': 'Password'}
 
     class Meta:
         model = CustomUser
@@ -109,7 +110,8 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Email Address'
-        self.fields['password'].widget.attrs['placeholder'] = 'Password'
+        self.fields['password'].widget.attrs = {'id': 'pwd',
+                                                'placeholder': 'Password'}
 
     error_messages = {
         'invalid_login': _(

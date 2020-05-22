@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 body{
     margin: 0;
     padding: 0;
@@ -10,7 +12,9 @@ body{
     font-family: sans-serif;
     font-weight: 300;
 }
-
+p{
+    text-align: center;
+}
 .body{
     position: relative;
     margin: 5% auto;
@@ -44,12 +48,13 @@ h2{
     color: black;
 }
 
-input[type='text']{
+input[type='text'], input[type='password']{
     display: inline-block;
     box-sizing: border-box;
     border-radius: 4px;
-    margin: 0.5vw 0;
-    padding: 1vw 1.2vw;
+    margin: 0.25vw 0;
+    padding: 1vw 1.5vw;
+    padding-right: 3vw;
     border: 1px solid #cccccc;
     width: 100%;
     outline: none;
@@ -58,26 +63,19 @@ input[type='text']{
     font-size: 1vw;
 }
 
-input[type='password']{
-    display: inline-block;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin: 0.5vw 0;
-    padding: 1vw 1.2vw;
-    border: 1px solid #cccccc;
-    width: 100%;
-    outline: none;
-    font-family: sans-serif;
-    font-weight: 400;
-    font-size: 1vw;
+.material-icons{
+    position: absolute;
+    left: 83%;
+    top: 49%;
+    font-size: 150%;
+    color: #999999;
 }
 
-input[type="text"]:focus{
-    border:1px solid lightblue;
-    outline:none;
+.material-icons.active{
+    color: dodgerblue;
 }
 
-input[type="password"]:focus{
+input[type="text"]:focus, input[type="password"]:focus{
     border:1px solid lightblue;
     outline:none;
 }
@@ -94,7 +92,6 @@ input[type='submit']{
     font-family: sans-serif;
     font-weight: 500;
     font-size: 1vw;
-    transition: 0.2s ease;
     cursor: pointer;
 }
 
