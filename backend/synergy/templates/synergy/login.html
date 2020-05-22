@@ -4,13 +4,27 @@
     <link rel="stylesheet" href="{% static 'synergy/login.css' %}">
 </head>
 
+<script>
+    function togglePass() {
+        var x = document.getElementById('pwd');
+        var y = document.getElementById('pwd-icon');
+
+        if (x.type === 'password') {
+            x.type = 'text';
+            y.style.color = 'dodgerblue';
+        }else {
+            x.type = 'password';
+            y.style.color = '#999999';
+        }
+    }
+</script>
+
 <body>
     <div id="registration">
         <div class="body">
             <div class="sign-up-page">
                 <div class="pic-box"></div>
                 <div class="sign-box">
-                    <a href="{% url 'register' %}" class="button">Register</a>
                     <div class='title'>
                         {% load static %}
                         <img src="{% static 'synergy/logo.png' %}" alt='logo' id='logo'>
@@ -20,7 +34,12 @@
                     {% csrf_token %}
                     <div class='sign-box-text'>
                         {{ form.username }}
-                        {{ form.password }}
+                        <div class= 'pwd-container'>
+                            {{ form.password }}
+                            <span class="material-icons visibility" id='pwd-icon' onclick="togglePass()">
+                                visibility
+                            </span><br>
+                        </div>
                         <label id='text'><a href="{% url 'password_reset' %}">Forgot Password?</a></label><br>
                     </div>
                     <input type='submit' name='signup-button' value='Login'/>
@@ -28,6 +47,7 @@
                     {% if form.errors %}
                         {{ form.error_messages.invalid_login }}
                     {% endif %}
+                    <p> Don't have an account? Click <u><a href="{% url 'register' %}">here</a></u> to sign up.</p>
                 </div>
             </div>
         </div>

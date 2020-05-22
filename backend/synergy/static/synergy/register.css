@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 body{
     margin: 0;
     padding: 0;
@@ -72,6 +74,18 @@ input[type='email']{
     font-size: 1vw;
 }
 
+.material-icons{
+    position: absolute;
+    left: 83%;
+    top: 60.5%;
+    font-size: 150%;
+    color: #999999;
+}
+
+.material-icons.active{
+    color: dodgerblue;
+}
+
 #first-name{
     margin-right: 1%;
 }
@@ -79,16 +93,8 @@ input[type='email']{
     width: 49.5%;
 }
 
-input[type="text"]:focus{
-    border:1px solid lightblue;
-    outline:none;
-}
-
-input[type="password"]:focus{
-    border:1px solid lightblue;
-    outline:none;
-}
-
+input[type="text"]:focus,
+input[type="password"]:focus,
 input[type="email"]:focus{
     border:1px solid lightblue;
     outline:none;
