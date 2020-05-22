@@ -1,4 +1,6 @@
 pytest
 django
+djangorestframework
+django-cors-headers
 mysqlclient
 pytest_django
