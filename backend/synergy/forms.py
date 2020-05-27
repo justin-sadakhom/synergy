@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-from .models import CustomUser, Product, Request, Business
+from .models import Business, CustomUser, Product
 
 
 # Custom fields
@@ -34,17 +34,6 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'quantity', 'cost']
-
-    name = NameField(max_length=30)
-
-
-class RequestForm(forms.ModelForm):
-
-    class Meta:
-        model = Request
-        fields = ['name', 'quantity', 'min_budget', 'max_budget',
-                  '_min_quality']
-        labels = {'_min_quality': 'Min quality'}
 
     name = NameField(max_length=30)
 

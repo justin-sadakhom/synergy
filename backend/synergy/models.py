@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db.models import URLField, BooleanField
+from django.db.models import BooleanField, URLField
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -20,117 +20,15 @@ def validate_name(name: str):
 
 # Database models
 
-class Item(models.Model):
-    """ An abstract class representing an object with a name that can take the
-    form of one or more units.
-
-    Attributes:
-        name (str): Name of the item.
-        quantity (int): How much of the item there is.
-    """
-
-    name = models.CharField(max_length=30, validators=[validate_name])
-    quantity = models.IntegerField(validators=[MinValueValidator(0)])
-
-    class Meta:
-        abstract = True
-
-
-class Product(Item):
-    """ A commodity available for purchase.
-
-    Attributes:
-        name (str): Name of the product.
-        quantity (int): How much is available for a single order.
-        cost (float): Cost per unit, in dollars.
-        supplier (Supplier): The business supplying the product.
-        _quality (float): Quality rating, from a scale of 0.0 to 5.0.
-    """
-
-    cost = models.DecimalField(
-        decimal_places=2,
-        max_digits=6,
-        validators=[MinValueValidator(0.0)]
-    )
-
-    _quality = models.DecimalField(
-        default=0.0,
-        max_digits=2,
-        decimal_places=1,
-        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)],
-        db_column='quality'
-    )
-
-    @property
-    def quality(self):
-        return self._quality
-
-    def update_quality(self) -> None:
-        """ Set quality to a new value based on [...] """
-        raise NotImplementedError
-
-    def __str__(self):
-
-        name = str(self.name).capitalize()
-
-        return '{0} – Price: ${1}, In Stock: {2}' \
-            .format(name, self.cost, self.quantity)
-
-
-class Request(Item):
-    """ A request for a Product that fits certain criteria.
-
-    Attributes:
-        name (str): Name of the desired product.
-        quantity (int): How much is wanted for a single order.
-        min_budget (float): Minimum budget for the order.
-        max_budget (float): Maximum budget for the order.
-        client (Client): The business requesting the order.
-        _min_quality (float): Minimum desired quality rating.
-    """
-
-    @property
-    def min_quality(self):
-        return self._min_quality
-
-    # Fields that are only used to increase readability of budget.
-
-    min_budget = models.DecimalField(
-        default=0.0,
-        max_digits=7,
-        decimal_places=2,
-        validators=[MinValueValidator(0.0)]
-    )
-
-    max_budget = models.DecimalField(
-        default=0.0,
-        max_digits=7,
-        decimal_places=2,
-        validators=[MinValueValidator(0.0)]
-    )
-
-    _min_quality = models.DecimalField(
-        blank=True,
-        default=0.0,
-        max_digits=2,
-        decimal_places=1,
-        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
-    )
-
-    def __str__(self):
-
-        name = str(self.name).capitalize()
-
-        return '{0} – Budget: ${1}-${2}, Quantity: {3}' \
-            .format(name, self.budget[0], self.budget[1], self.quantity)
-
-
 class Business(models.Model):
     """ An abstract class representing a business using the website.
 
     Attributes:
         name (str): Title of the business.
-        location (str): Where the business is located.
+        country (str): Where the business is located.
+        industry (str): The primary industry of the business.
+        postal_code (str): The business's postal code.
+        website (str): The business's website.
     """
 
     # Choices
@@ -226,6 +124,42 @@ class Business(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Product(models.Model):
+    """ A commodity available for purchase.
+
+    Attributes:
+        name (str): Name of the product.
+        quantity (int): How much is available for a single order.
+        cost (float): Cost per unit, in dollars.
+        supplier (Supplier): The business supplying the product.
+        _quality (float): Quality rating, from a scale of 0.0 to 5.0.
+    """
+
+    name = models.CharField(max_length=30, validators=[validate_name])
+    quantity = models.IntegerField(validators=[MinValueValidator(0)])
+
+    cost = models.DecimalField(
+        decimal_places=2,
+        max_digits=6,
+        validators=[MinValueValidator(0.0)]
+    )
+
+    _quality = models.DecimalField(
+        default=0.0,
+        max_digits=2,
+        decimal_places=1,
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)],
+        db_column='quality'
+    )
+
+    def __str__(self):
+
+        name = str(self.name).capitalize()
+
+        return '{0} – Price: ${1}, In Stock: {2}' \
+            .format(name, self.cost, self.quantity)
 
 
 class UserManager(BaseUserManager):
