@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import Business
 
 
-class TodoSerializer(serializers.ModelSerializer):
+class BusinessSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = CustomUser
-        fields = ('first_name', 'last_name', 'email')
+        model = Business
+        fields = ('name', 'country', 'industry', 'postal_code', 'website')

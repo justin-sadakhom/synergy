@@ -1,10 +1,18 @@
 from django.contrib.auth.views import LoginView
+from django.forms import modelform_factory
 from django.shortcuts import redirect, render
-from .forms import InfoForm, LoginForm, RegistrationForm
-from .models import Business
+from rest_framework import viewsets
+from .forms import InfoForm, LoginForm, ProductForm, RegistrationForm
+from .models import Business, Product
+from .serializers import BusinessSerializer
 
 
 # Create your views here.
+
+class BusinessView(viewsets.ModelViewSet):
+    serializer_class = BusinessSerializer
+    queryset = Business.objects.all()
+
 
 class CustomLoginView(LoginView):
 
@@ -67,7 +75,6 @@ def listing(request):
     return render(request, 'synergy/listing.html', {'info_form': info_form})
 
 
-"""
 def submit_product(request):
 
     product_form = modelform_factory(Product, form=ProductForm)
@@ -82,21 +89,4 @@ def submit_product(request):
         my_form = product_form()
 
     return render(request, 'synergy/productform.html', {'my_form': my_form})
-
-
-def submit_request(request):
-
-    request_form = modelform_factory(Request, form=RequestForm)
-
-    if request.method == 'POST':
-        this_form = request_form(request.POST)
-
-        if this_form.is_valid():
-            this_form.save()
-
-    else:
-        this_form = request_form()
-
-    return render(request, 'synergy/requestform.html', {'this_form': this_form})
-"""
 
