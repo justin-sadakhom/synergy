@@ -45,6 +45,15 @@
                     </div>
                     <input type='submit' name='signup-button' value='Register'/>
                     </form>
+                    {% if signup_form.errors.first_name %}
+                        {{ signup_form.errors.first_name.0 }}
+                    {% elif signup_form.errors.last_name %}
+                        {{ signup_form.errors.last_name.0 }}
+                    {% elif signup_form.errors.email %}
+                        {{ signup_form.errors.email.0 }}
+                    {% elif signup_form.errors.password1 %}
+                        {{ signup_form.errors.password1.0 }}
+                    {% endif %}
                     <p> Already have an account? Click <u><a href="{% url 'login' %}">here</a></u> to log in.</p>
                 </div>
                 <div class="pic-box" id='pic-up'></div>
