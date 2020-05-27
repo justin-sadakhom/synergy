@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
-from .models import Item, Product
-from .forms import  ProductForm, normalize_spaces
+from .models import Product
+from .forms import ProductForm, normalize_spaces
 import pytest
 
 """
