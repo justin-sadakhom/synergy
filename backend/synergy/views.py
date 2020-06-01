@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from rest_framework import viewsets
 from .forms import InfoForm, LoginForm, ProductForm, RegistrationForm
 from .models import Business, Product
-from .serializers import BusinessSerializer
+from .serializers import BusinessSerializer, ProductSerializer
 
 
 # Create your views here.
@@ -20,6 +20,11 @@ class CustomLoginView(LoginView):
         super(LoginView, self).__init__(*args, **kwargs)
 
     form_class = LoginForm
+
+
+class ProductView(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
 
 
 def home(request):

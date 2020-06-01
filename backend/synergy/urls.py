@@ -4,6 +4,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'businesses', views.BusinessView, basename='Business')
+router.register(r'products', views.ProductView, basename='Product')
 
 urlpatterns = [
     path(
