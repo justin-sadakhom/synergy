@@ -1,0 +1,22 @@
+{% extends "synergy/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+
+    {% if user.info_complete and user.verified%}
+        <p>Welcome, {{ user }}!</p>
+        <p><a href="{% url 'logout' %}">Logout</a></p>
+
+    {% else %}
+        <p>Welcome, {{ user }}! List your business <a href="{% url 'listing' %}">here</a>.</p>
+        <p><a href="{% url 'logout' %}">Logout</a></p>
+
+    {% endif %}
+
+{% else %}
+    <p>You are not logged in.</p>
+    <a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">Register</a>
+
+{% endif %}
+{% endblock %}

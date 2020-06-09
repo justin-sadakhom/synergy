@@ -1,22 +1,57 @@
-{% extends "synergy/base.html" %}
-{% block title %}Home{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html>
 
-{% if user.is_authenticated %}
-
-    {% if user.info_complete and user.verified%}
-        <p>Welcome, {{ user }}!</p>
-        <p><a href="{% url 'logout' %}">Logout</a></p>
-
-    {% else %}
-        <p>Welcome, {{ user }}! List your business <a href="{% url 'listing' %}">here</a>.</p>
-        <p><a href="{% url 'logout' %}">Logout</a></p>
-
-    {% endif %}
-
-{% else %}
-    <p>You are not logged in.</p>
-    <a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">Register</a>
-
-{% endif %}
-{% endblock %}
+<head>
+    <title>Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'synergy/home.css' %}">
+</head>
+<body>
+    <div class='nav'>
+        <ul>
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li>ABOUT</li>
+            <li>SERVICES</li>
+        </ul>
+    </div>
+    <div class='top'>
+        <div class='left'>
+            <h1>SYNERGY</h1>
+            <p>Strategic business partnerships allow small businesses the opportunity to grow their customer base and improve
+                their business.
+            </p>
+            <p><a href="{% url 'register' %}">Join Now</a></p>
+        </div>
+        <div class='right'></div>
+    <br>
+    <br>
+    <br>
+    </div>
+    <div class='bottom'>
+        <div class='leftGrid'>
+            <h1>Check out the services we offer!</h1>
+            {% load static %}
+            <img src="{% static 'synergy/img1.png' %}" style="vertical-align:left;" class='img2'>
+        </div>
+        <div class='boxes' >
+            <div class='box' id='box1'>
+               <p>Enterprise Services</p>
+            </div>
+            <div  class='box' id='box2'>
+                <p>Emerging Technologies</p>
+            </div>
+            <div class='box' id='box3'>
+                <p>Internet of Things</p>
+            </div>
+            <div class='box' id='box4'>
+                <p>Consulting & Discovery</p>
+            </div>
+            <div  class='box' id='box5'>
+                <p>Cloud & DevOps</p>
+            </div>
+            <div class='box' id='box6'>
+                <p>Web / CMS & PWA</p>
+            </div>
+        </div>
+    </div> 
+</body>
